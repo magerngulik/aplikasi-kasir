@@ -1,7 +1,7 @@
 <html>
 
 <head>
-	<title>InGraB | LOGIN</title>
+	<title>Graha Bangunan | LOGIN</title>
 	<link rel="stylesheet" href="<?= base_url('assets/'); ?>css/mycss.css">
 	<link rel="stylesheet" href="<?= base_url('assets/'); ?>css/bootstrap.css">
 	<link href="<?= base_url('assets/'); ?>css/sb-admin-2.min.css" rel="stylesheet">

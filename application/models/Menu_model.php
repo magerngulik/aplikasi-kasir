@@ -64,9 +64,7 @@ class Menu_model extends CI_Model
         $this->db->order_by('idbarang','DESC');
         if ($keyword) {
             $this->db->like('nm_barang',$keyword);
-            $this->db->or_like('hrg_modal',$keyword);
-            $this->db->or_like('hrg_satuan',$keyword);
-            $this->db->or_like('stok',$keyword);           
+            $this->db->or_like('idbarang',$keyword);           
         }
         $this->db->limit($limit,$start);
         return $this->db->get()->result_array(); 

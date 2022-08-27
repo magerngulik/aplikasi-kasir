@@ -11,8 +11,6 @@ class Data extends CI_Controller
         $this->load->model('Barang_model', 'barang');
         $this->load->model('Supiler_model', 'suppiler');
         $this->load->model('Konsumen_model', 'konsumen');
-
-        
     }
 // ------------------------------------------------------------Barang-----------------------------------------------------------------------
     public function index()
@@ -28,11 +26,13 @@ class Data extends CI_Controller
         }else {
             $data['keyword']= $this->session->userdata('keyword');
         }         
-        $this->db->like('nm_barang', $data['keyword']);
-        $this->db->or_like('hrg_modal', $data['keyword']);
-        $this->db->or_like('hrg_satuan', $data['keyword']);
-        $this->db->or_like('stok', $data['keyword']);  
-        $this->db->from('barang');
+        // echo $search = str_replace(' ','_',$data['keyword']);
+        // $search = preg_replace('/\s+/', '', $data['keyword']);
+
+        $array = array('idbarang' =>  $data['keyword'], 'nm_barang' =>  $data['keyword']);
+        $this->db->from('barang'); 
+        $this->db->or_like($array);
+        // $this->db->or_having('nm_barang',  $data['keyword']);
         $config['total_rows'] =$this->db->count_all_results(); 
         $data['total_rows'] = $config['total_rows']; 
         $config['per_page'] = 13;
@@ -41,7 +41,7 @@ class Data extends CI_Controller
         $this->pagination->initialize($config);
         
         $data['start'] = $this->uri->segment(3);
-        $data['poin'] = $this->menu->getBarang($config['per_page'], $data['start'],$data['keyword']);
+        $data['poin'] = $this->menu->getBarang($config['per_page'], $data['start'], $data['keyword']);
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -73,28 +73,44 @@ class Data extends CI_Controller
             $this->load->view('templates/footer');
         } else {
 
-            $basicformat = "899000100";            
-            $katpoin = $this->input->post('kategori');
-            if (strlen($katpoin<=1)) {
-                $katpoin ="00".$katpoin;   
-            }else if (strlen($num['total']) > 1 && strlen($num['total']) <=2){
-                $katpoin ="0".$katpoin;
-            }else {
-                $katpoin = $this->input->post('kategori');
+            $basicformat = "8990001";
+            $katpoin = $this->input->post('kategori');              
+            $this->db->select('COUNT(nm_barang) as total', false);
+            $this->db->from('barang a'); 
+            $this->db->join('kategori b', 'a.idkategori=b.idkategori', 'left');
+            $this->db->where('a.idkategori',$katpoin);
+            $num = $this->db->get()->row_array();    
+            $katnumber = (int)$katpoin;
+            $hasikKategori="";
+            
+               
+            if($katnumber <10){
+                $hasikKategori = "00".(string) $katnumber;
+            }else
+            if ($katnumber <100) {
+                $hasikKategori = "0".(string) $katnumber;   
+            }else
+            if($katnumber >=100){
+                $hasikKategori = $katnumber;
             }
-
-
-            $num = $this->barang->getCountIdBarang($katpoin);
-            if (strlen($num['total']) <=1 ) {
-                $num['total'] = "00".$num['total'];
-            }else if (strlen($num['total']) > 1 && strlen($num['total']) <=2) {
-                $num['total'] = "0".$num['total'];
-            }else {
-                $num = $num['total'];
+           
+            
+            $text1 = (int)$num['total'];
+            $count = $text1 + 1;
+            $total = "";
+            
+            if($count <10){
+                $total = "00".(string) $count;
+            }else
+            if ($count <100) {
+                $total = "0".(string) $count;   
+            }else
+            if($count >=100){
+                $total = $count;
             }
+           
 
-                         
-            $endpoin = $basicformat.$katpoin.$num['total'];
+            $endpoin = $basicformat.$hasikKategori.$total;
             $data = [
                 'idbarang' => $endpoin,
                 'nm_barang' => $this->input->post('nm_barang'),
@@ -269,7 +285,7 @@ class Data extends CI_Controller
         $this->load->view('templates/footer');
     } else {
         $basicformat = "PS-";            
-        $num = $this->db->count_all_results('supplier', FALSE);;  
+        $num = $this->db->count_all_results('supplier', FALSE); 
         $text1 = (int)$num;
         $count = $text1 + 1;                 
         $id = $basicformat.$count;
@@ -462,6 +478,7 @@ public function editKonsumen($id){
         $data['datauser'] = $this->db->get('user')->result_array();
         $data['subMenu'] = $this->menu->getSubMenu();
         $data['menu'] = $this->db->get('user_menu')->result_array();
+        $data['role'] = $this->db->get('user_role')->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -510,10 +527,7 @@ public function editKonsumen($id){
                 }else
                 if($count >=100){
                     $total = $count;
-                }
-                
-                
-                  
+                }        
                 $id = $basicformat.$total;
                 $data = [
                     'name' => htmlspecialchars($this->input->post('name', true)),
@@ -542,4 +556,39 @@ public function editKonsumen($id){
         redirect('data/pegawai');
     }
 
+    public function editPegawai($id){
+
+        $data['title'] = 'Edit Pegawai';
+        $data['user'] = $this->db->get_where('user', ['id' => $id])->row_array();
+        $data['datauser'] = $this->db->get('user')->result_array();
+        $data['role'] = $this->db->get('user_role')->result_array();
+        $data['subMenu'] = $this->menu->getSubMenu();
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+
+        $this->form_validation->set_rules('name', 'Username', 'required|trim|is_unique[user.email]', [
+            'is_unique' => 'Username ini sudah di gunakan!','required' => 'Username tidak boleh kosong!'
+        ]);
+       
+        $this->form_validation->set_rules('role', 'Role', 'required|trim',['required' => 'Role Harus dipilih!']);
+
+        if ($this->form_validation->run() ==  false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('data/editpegawai', $data);
+            $this->load->view('templates/footer'); 
+        } else {
+                $data = [
+                    'name' => htmlspecialchars($this->input->post('name', true)),
+                    'email' => htmlspecialchars($this->input->post('name', true)),
+                    'role_id' => $this->input->post('role'),               
+                ];
+
+                $this->db->where('id',$id);
+                $this->db->update('user',$data);
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Pegawai di Tambahkan!</div>');
+                redirect('data/pegawai/');
+        }
+        
+    }
 }

@@ -7,8 +7,7 @@ class Barang_model extends CI_Model
 
         // $query = mysqli_query($db_link, "select * from kategori");
         // $a = mysqli_query($db_link, "SELECT * from barang order by idbarang DESC");
-        // $row = mysqli_fetch_array($a);
-          
+        // $row = mysqli_fetch_array($a);        
     }
 
     public function getCountIdBarang($idKategori){
@@ -40,10 +39,10 @@ class Barang_model extends CI_Model
         $this->db->from('barang a'); 
         $this->db->join('kategori b', 'a.idkategori=b.idkategori', 'left');
         if ($keyword) {
-            $this->db->like('nm_barang',$keyword);
-            $this->db->or_like('hrg_modal',$keyword);
-            $this->db->or_like('hrg_satuan',$keyword);
-            $this->db->or_like('stok',$keyword);           
+            // $search = str_replace('/\s\s+/','%',$keyword);
+            $this->db->like('nm_barang', $keyword);
+            $this->db->or_like('hrg_modal', $keyword);  
+
         }
         return $this->db->get($limit,$start)->result_array();
         

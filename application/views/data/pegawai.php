@@ -37,13 +37,14 @@
                         <th scope="row"><?= $i; ?></th>
                         <td><?= $sm['id_pegawai']; ?></td>
                         <td><?= $sm['name']; ?></td>
-                        <?php if($sm['role_id'] ==1):?>
-                        <td><?="Admin"?></td>
-                        <?php else:?>
-                            <td><?="Kasir"?></td>
-                        <?php endif;?>
+                        <?php  foreach ($role as $m) : ?>    
+                            <?php if($sm['role_id'] == $m['id']):?>
+                            <td><?=$m['role']?></td>                    
+                            <?php endif;?>
+                        <?php endforeach; ?>
+
                         <td>
-                            <a href="<?= base_url('data/editKategori/').$sm['id']; ?>" class="badge badge-success">edit</a>
+                            <a href="<?= base_url('data/editPegawai/').$sm['id']; ?>" class="badge badge-success">edit</a>
                             <a href="<?= base_url('data/hapusPegawai/').$sm['id']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="badge badge-danger">Delete</a>
                         </td>
                     </tr>
