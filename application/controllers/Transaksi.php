@@ -259,4 +259,20 @@ class Transaksi extends CI_Controller
         $this->session->unset_userdata('keyword');
         redirect('transaksi/detailPembelian');
     }
+
+// ------------------------------------------------------------------------------------------------------------------------------------------
+
+public function penjualan(){
+    
+
+
+
+
+
+
+
+
+
+}
+
 }

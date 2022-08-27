@@ -81,16 +81,8 @@
             </table>
            
             <form action="" method="post">
-
-
-      
-
         </div>
-
-
-        <!-- tabel data nota -->
-        
-        
+        <!-- tabel data nota -->       
         <div class="col-lg-4 ml-5 mb-3">
             <h1 class="h3 text-gray-800">Keterangan Nota Pembelian</h1>
                 <form action="" method="post">
@@ -139,9 +131,6 @@
                 <th scope="col">Barang</th>
                 <th scope="col">Harga Beli</th>
                 <th scope="col">Jumlah</th>
-                <th scope="col">Stok</th>
-                <th scope="col">Harga Modal</th>
-                <th scope="col">Harga Satuan</th>
                 <th scope="col">Total</th>
                 <th scope="col">Action</th>
                 </tr>
@@ -168,9 +157,6 @@
                         <td><?= $sm['nm_barang']; ?></td>
                         <td><?= $sm['hrg_beli']; ?></td>
                         <td><?= $sm['jml_beli']; ?></td>
-                        <td><?= $sm['stok']; ?></td>
-                        <td><?= $sm['hrg_modal']; ?></td>
-                        <td><?= $sm['hrg_satuan']; ?></td>
                         <td><?= $total = $sm['hrg_beli'] * $sm['jml_beli'] ?></td>
                         <td>
                             <a href="<?= base_url('transaksi/hapusCard/').$sm['rowid']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
@@ -185,7 +171,7 @@
                     <?php endforeach; ?>
                     <!-- bawah -->
                     <tr>
-                        <td class="font-weight-bold" colspan="4">Total Pembelian</td>
+                        <td class="font-weight-bold" colspan="6">Total Pembelian</td>
                         <td colspan="2"><?=rupiah($countTotal)?> </td>
                     </tr>
             </tbody>          

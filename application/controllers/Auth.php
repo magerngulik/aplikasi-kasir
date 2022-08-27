@@ -196,7 +196,10 @@ class Auth extends CI_Controller
     {
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('role_id');
-
+        $this->session->unset_userdata('idbarang');
+        $this->session->unset_userdata('detailid');
+        $this->session->unset_userdata('suppiler');
+        $this->cart->destroy(); 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logged out!</div>');
         redirect('auth');
     }
