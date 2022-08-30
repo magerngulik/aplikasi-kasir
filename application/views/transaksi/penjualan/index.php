@@ -16,7 +16,7 @@
 
             <div class="row">
                 <!-- ukuran dalam col untuk mengatur panjang dari dari element yang sedand ei eksekusi-->
-                <div class="col-6">
+                <div class="col-lg">
                  <div class="row">
                     <div class="col">
                         <form action="<?php base_url('data');?>" method="post">
@@ -31,19 +31,15 @@
                     <div class="col">
                         <a class="btn btn-danger" href="<?= base_url('transaksi/allKonsumen1') ?>"> All Data</a>
                     </div>
+                    <div class="col ml-auto">             
+                    <?=  $this->pagination->create_links();?>
+                    </div>
                 </div>   
 
                 </div>
             </div>  
             <?= $this->session->flashdata('message'); ?>
-            <div class="row">
-                <div class="col">
-                <a href="<?= base_url("data/tambahKonsumen/") ?>" class="btn btn-primary mb-3">Tambah Data</a>
-                </div>
-                <div class="col ml-auto">             
-                <?=  $this->pagination->create_links();?>
-                </div>
-            </div>     
+         
             <p class="font-weight-bold mb-0">Total Data <?=$total_rows?></p>  
 
             <table class="table table-hover">
