@@ -31,13 +31,12 @@
                         </form>
                     </div>
                     <div class="col">
-                        <a class="btn btn-danger" href="<?= base_url('transaksi/alldata/')?>"> All Data</a>
+                        <a class="btn btn-danger" href="<?= base_url('transaksi/alldataJual/')?>"> All Data</a>
                     </div>
                     <div class="col ml-auto">             
                     <?=  $this->pagination->create_links();?>
                     </div>
                 </div>   
-
                 </div>
             </div>  
             <?= $this->session->flashdata('message'); ?> 
@@ -48,6 +47,7 @@
                         <th scope="col">No</th>
                         <th scope="col">ID Barang</th>
                         <th scope="col">Nama Barang</th>
+                        <th scope="col">Stok</th>                     
                         <th scope="col">Harga Jual</th>                     
                         <th scope="col">Action</th>
                  
@@ -68,11 +68,10 @@
                         <th scope="row"><?= ++$start; ?></th>
                         <td><?= $sm['idbarang']; ?></td>
                         <td><?= $sm['nm_barang']; ?></td>
-                        <td><?= $sm['hrg_modal']; ?></td>
-
-                   
+                        <td><?= $sm['stok']; ?></td>                 
+                        <td><?= $sm['hrg_modal']; ?></td>                 
                         <td>
-                            <a href="<?= base_url('transaksi/iddatabarang/').$sm['idbarang']; ?>" class="btn btn-primary">Pilih</a>                 
+                            <a href="<?= base_url('transaksi/iddatapenjualan/').$sm['idbarang']; ?>" class="btn btn-primary">Pilih</a>                 
                         </td>
                     </tr>
                     <?php ?>
@@ -86,39 +85,31 @@
         <div class="col-lg-4 ml-5 mb-3">
             <h1 class="h3 text-gray-800">Keterangan Nota Pembelian</h1>
                 <form action="" method="post">
-                <!-- Options no_pembelian	no_notabeli	idpegawai	idsupplier	jenis	tgl_masuk catatan	 --> 
-                <input type="hidden" name="idsupplier" id="idsupplier" value="<?= $nota_pembelian['no_pembelian']; ?>">
-                <input type="hidden" name="id_pegawai" id="id_pegawai" value="<?= $nota_pembelian['idsupplier']; ?>">
+                          
+                <!-- no_nota	tgl_nota jml_bayar	idpegawai	idpelanggan -->
+                <input type="hidden" name="no_nota" id="no_nota" value="<?= $nota_jual['no_nota']; ?>">
+                <input type="hidden" name="id_pegawai" id="id_pegawai" value="<?= $user['id_pegawai']; ?>">
                 <?= $this->session->flashdata('name'); ?>
-                
-
                 <div class="form-group row">
-                    <label for="email" class="col-sm-3 col-form-label">No Pembelian</label>
+                    <label for="email" class="col-sm-3 col-form-label">No Nota</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="no_pembelian" name="no_pembelian" value="<?= $nota_pembelian['no_pembelian']; ?>" readonly>
-                        <?= form_error('no_pembelian', '<small class="text-danger pl-3">', '</small>'); ?>
+                        <input type="text" class="form-control" id="no_nota" name="no_nota" value="<?= $nota_jual['no_nota']; ?>" readonly>
+                        <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="col-sm-3 col-form-label">No Nota Beli</label>
+                    <label for="email" class="col-sm-3 col-form-label">Nama Pelangan</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="no_nota" name="no_nota" value="<?= $nota_pembelian['no_notabeli']; ?>" readonly>
+                        <input type="text" class="form-control" id="no_nota" name="no_nota" value="<?= $nota_jual['nm_konsumen']; ?>" readonly>
                         <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label for="email" class="col-sm-3 col-form-label">Suppiler</label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="no_nota" name="no_nota" value="<?= $nota_pembelian['nm_supplier']; ?>" readonly>
-                        <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>
-                    </div>
-                </div>
-
+       
                 <div class="form-group row">
                     <label for="email" class="col-sm-3 col-form-label">Tanggal Masuk</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="no_nota" name="no_nota" value="<?= $nota_pembelian['tgl_masuk']; ?>" readonly>
+                        <input type="text" class="form-control" id="tgl_nota" name="tgl_nota" value="<?= $nota_jual['tgl_nota']; ?>" readonly>
                         <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>
                     </div>
                 </div>
@@ -127,6 +118,25 @@
         </div>
         <!-- akhir nota -->
     </div>
+
+    <!-- btn hitung -->
+    <div class="row">
+        <div class="col">
+            <form action="" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Jumlah Bayar" name="bayar" autocomplete="off" autofocus>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-lg" style="width: 100%;" type="submit" name= "submit">Hitung</button>
+                </div>
+            </form>
+        </div>                    
+    </div>
+    
+
+                        
+
+
     <div class="row mt-5">
      <div class="col-lg mx-auto">
         <table class="table table-bordered">
@@ -134,9 +144,8 @@
                 <tr>
                     
                 <th scope="col">No</th>
-                <th scope="col">ID Barang</th>
-                <th scope="col">Barang</th>
-                <th scope="col">Harga Beli</th>
+                <th scope="col">Nama Barang</th>
+                <th scope="col">Harga Satuan</th>
                 <th scope="col">Jumlah</th>
                 <th scope="col">Total</th>
                 <th scope="col">Action</th>
@@ -157,31 +166,39 @@
                     $countTotal=0;
                     ?>
                     <?php foreach ($cart as $sm) : ?>
-                    <tr>
-
+                    <tr>                        
                     <th scope="row"><?=$i?></th>
-                        <td><?= $sm['id']; ?></td>
                         <td><?= $sm['nm_barang']; ?></td>
-                        <td><?= $sm['hrg_beli']; ?></td>
-                        <td><?= $sm['jml_beli']; ?></td>
-                        <td><?= $total = $sm['hrg_beli'] * $sm['jml_beli'] ?></td>
+                        <td><?= $sm['harga_jual']; ?></td>
+                        <td><?= $sm['jumlah']; ?></td>
+                        <td><?= $total = $sm['harga_jual'] * $sm['jumlah'] ?></td>
                         <td>
-                            <a href="<?= base_url('transaksi/hapusCard/').$sm['rowid']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
+                            <a href="<?= base_url('transaksi/hapusCardPenjualan/').$sm['rowid']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                         <?php 
-                        $countTotal = $countTotal + $total;
-                        
+                        $countTotal = $countTotal + $total;                       
                         ?>
-
                     <?php $i++?>
                     <?php endforeach; ?>
                     <!-- bawah -->
                     <tr>
-                        <td class="font-weight-bold" colspan="6">Total Pembelian</td>
-                        <td colspan="2"><?=rupiah($countTotal)?> </td>
+                        <td class="font-weight-bold" colspan="4">Total Penjualan</td>
+                        <td colspan="3"><?=rupiah($countTotal)?> </td>
                     </tr>
-            </tbody>          
+                    <tr>
+                        <?php $kembalian = $this->input->post('bayar')?>
+                        <td class="font-weight-bold" colspan="4">Dibayarkan</td>
+                        <td colspan="3"><?=rupiah($kembalian)?> </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold" colspan="4">Kembalian</td>
+                        <td colspan="3"><?=rupiah($kembalian - $countTotal)?> </td>
+                    </tr>
+            </tbody>  
+            
+            
+
             <?php 
             function rupiah($angka){  
                 $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
@@ -192,8 +209,8 @@
         </div>    
     </div>   
     <div class="row ">
-    <div class="col"><a href="<?= base_url('transaksi/simpanData/') ?>" class="btn btn-primary btn-lg" type="button" style="width: 100%;">SIMPAN</a></div>
-			<div class="col"> <a href="<?= base_url('transaksi/hapusDetailTrasaksi/') ?>" class="btn btn-warning btn-lg" style="width: 100%;">KEMBALI</a></div>
+    <div class="col"><a href="<?= base_url('transaksi/simpanPenjualan') ?>" class="btn btn-primary btn-lg" type="button" style="width: 100%;">SIMPAN</a></div>
+			<div class="col"> <a href="<?= base_url('transaksi/hapusNotaPenjualan/') ?>" class="btn btn-warning btn-lg" style="width: 100%;">KEMBALI</a></div>
     </div>        
 
 </div>
