@@ -31,10 +31,11 @@
                     <div class="col">
                         <a class="btn btn-danger" href="<?= base_url('data/allSupiller') ?>"> All Data</a>
                     </div>
-                </div>   
+                    </div>   
 
                 </div>
             </div>  
+
             <?= $this->session->flashdata('message'); ?>
             <div class="row">
                 <div class="col">

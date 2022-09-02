@@ -75,7 +75,7 @@
                     <a href="<?= base_url('transaksi/hapusidJualBarang'); ?>" name=detailBeli class="btn btn-secondary ">Kembali</a>
                 </div>
             </div>
-            </form>
+        </form>
         </div>
     </div>
 

@@ -65,6 +65,7 @@ class Menu_model extends CI_Model
         if ($keyword) {
             $this->db->like('nm_barang',$keyword);
             $this->db->or_like('idbarang',$keyword);           
+            $this->db->or_like('a.idkategori',$keyword);           
         }
         $this->db->limit($limit,$start);
         return $this->db->get()->result_array(); 

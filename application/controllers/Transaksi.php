@@ -6,7 +6,9 @@ class Transaksi extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        is_logged_in();
         $this->load->library('pagination');
+        $this->load->library('form_validation');
         $this->load->model('Menu_model', 'menu');
         $this->load->model('Barang_model', 'barang');
         $this->load->model('Supiler_model', 'suppiler');
@@ -461,12 +463,11 @@ public function hapusNotaPenjualan(){
     }
 
     public function simpanPenjualan(){
-        $cart = $this->cart->contents();         
+        $cart = $this->cart->contents();           
         //  Detail penjualan
         // no_nota	idbarang jumlah	harga_jual laba
         //  data penjualan
         // no_nota	tgl_nota jml_bayar idpegawai idpelanggan
-
         foreach ($cart as $key => $value) {
             $no_pembelian = $this->session->userdata('detailjual');
             $idbarang =$value['idbarang'];
@@ -510,4 +511,76 @@ public function hapusNotaPenjualan(){
         $this->session->unset_userdata('idjualbarang');
         redirect('transaksi/detailPenjualan');
     }
+ 
+//  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------   
+    public function cekharga(){
+        $data['title'] = 'Cek Harga';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['tAssets'] = $this->barang->getSumAssets();
+        $data['tStock'] = $this->barang->getSumStock();
+        $config['base_url'] = 'http://localhost/admin-graha/transaksi/cekharga';
+        if ($this->input->post('keyword')) {
+            $data['keyword']= $this->input->post('keyword');
+            $this->session->set_userdata('keyword', $data['keyword']);
+        }else {
+            $data['keyword']= $this->session->userdata('keyword');
+        }
+        
+        if ($this->input->post('pilih')) {
+            $data['ketbarang'] = $this->db->get_where('barang', ['idbarang' => $this->input->post('pilih')])->row_array();
+        }else {
+            $dataBarang = [
+                'nm_barang' => '',
+                'hrg_modal' => ''
+                ];
+            $data['ketbarang'] = $dataBarang;
+        }
+
+        
+        $array = array('idbarang' =>  $data['keyword'], 'nm_barang' =>  $data['keyword']);
+        $this->db->from('barang'); 
+        $this->db->or_like($array);
+        // $this->db->or_having('nm_barang',  $data['keyword']);
+        $config['total_rows'] =$this->db->count_all_results(); 
+        $data['total_rows'] = $config['total_rows']; 
+        $config['per_page'] = 9;  
+        //inisialisasi
+        $this->pagination->initialize($config);       
+        $data['start'] = $this->uri->segment(3);
+        $data['poin'] = $this->menu->getBarang($config['per_page'], $data['start'], $data['keyword']);
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('transaksi/cekharga/index', $data);
+        $this->load->view('templates/footer');
+
+    }
+
+    public function hitungharga($id){
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['ketbarang'] = $this->db->get_where('barang', ['idbarang' =>$id])->row_array();
+        $data['title'] = 'Input Jumlah Jual Barang';
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+        $data['subMenu'] = $this->menu->getSubMenu();
+        
+        if ($this->input->post('jml')) {
+            $data['total'] = $this->input->post('jml') * $this->input->post('hrg_modal');
+         }else {
+            $data['total']=0;
+         }
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('transaksi/cekharga/input_harga', $data);
+        $this->load->view('templates/footer');
+ 
+    }
+
+    
+    public function alldataHarga(){
+        $this->session->unset_userdata('keyword');
+        redirect('transaksi/cekharga');
+    }
+
 }

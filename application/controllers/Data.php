@@ -11,6 +11,7 @@ class Data extends CI_Controller
         $this->load->model('Barang_model', 'barang');
         $this->load->model('Supiler_model', 'suppiler');
         $this->load->model('Konsumen_model', 'konsumen');
+        is_logged_in();
     }
 // ------------------------------------------------------------Barang-----------------------------------------------------------------------
     public function index()
