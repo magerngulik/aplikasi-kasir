@@ -16,6 +16,35 @@ class Report_model extends CI_Model
         $this->db->limit($limit,$start);
         return $this->db->get()->result_array(); 
     }
+    
+    public function getStokMinus($limit,$start,$keyword=null){
+        
+        $this->db->select('*');
+        $this->db->from('barang a'); 
+        $this->db->join('kategori b', 'a.idkategori=b.idkategori', 'left');
+        $this->db->order_by('idbarang','DESC');
+        $this->db->where('a.stok < "0"');
+        if ($keyword) {
+            $this->db->like('a.idkategori',$keyword);
+        }
+        $this->db->limit($limit,$start);
+        return $this->db->get()->result_array(); 
+    }
+
+    public function getCetakStokMinus($keyword = null){
+        $this->db->select('*');
+        $this->db->from('barang a'); 
+        $this->db->join('kategori b', 'a.idkategori=b.idkategori', 'left');
+        $this->db->where('a.stok < "0"');
+        if ($keyword > 0) {
+            $this->db->like('a.idkategori',$keyword);
+        }
+        return $this->db->get()->result_array(); 
+    }
+
+
+
+
 
 
     public function getCetakBarang($keyword = null){

@@ -37,7 +37,7 @@
                         </form>
                     </div>
                     <div class="col">
-                        <a class="btn btn-danger" href="<?= base_url('laporan/alldata/')?>"> All Data</a>
+                        <a class="btn btn-danger" href="<?= base_url('laporan/alldataStokMinus/')?>"> All Data</a>
                     </div>
                 </div>   
 
@@ -46,7 +46,7 @@
             <?= $this->session->flashdata('message'); ?>
             <div class="row">
                 <div class="col">
-                    <a href="<?= base_url("laporan/reportBarang/").$cetak ?>" class="btn btn-primary mb-3">Cetak</a>              
+                    <a href="<?= base_url("laporan/reportStokMinus/").$cetak ?>" class="btn btn-primary mb-3">Cetak</a>              
                 </div>
                 <div class="col ml-auto">             
                 <?=  $this->pagination->create_links();?>

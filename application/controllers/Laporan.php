@@ -311,5 +311,71 @@ class Laporan extends CI_Controller
     }
 
     
-    
+    public function stokminus()
+    {
+        $data['title'] = 'Stok Minus Barang';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['menu'] = $this->db->get('user_menu')->result_array();        
+        $data['tAssets'] = $this->barang->getSumAssets();
+        $data['tStock'] = $this->barang->getSumStock();
+        $data['kategori'] = $this->barang->allkategori();
+        $config['base_url'] = 'http://localhost/admin-graha/laporan/stokminus';
+        if ( $this->input->post('keyword')) {
+            $data['keyword']= $this->input->post('keyword');
+            $this->session->set_userdata('keyword', $data['keyword']);
+            $data['cetak'] = $this->input->post('keyword');
+        }else {
+            $data['keyword']= $this->session->userdata('keyword');
+            $data['cetak'] = 0;
+        }         
+
+        $array = array('idkategori' =>  $data['keyword']);
+        $this->db->from('barang'); 
+        $this->db->where('stok < "0"');
+        $this->db->or_like($array);
+        $config['total_rows'] =$this->db->count_all_results(); 
+        $data['total_rows'] = $config['total_rows']; 
+        $config['per_page'] = 13;
+        
+        //inisialisasi
+        $this->pagination->initialize($config);
+        
+        $data['start'] = $this->uri->segment(3);
+        $data['poin'] = $this->report->getStokMinus($config['per_page'], $data['start'], $data['keyword']);
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('laporan/data_stok_minus', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function alldataStokMinus(){
+        $this->session->unset_userdata('keyword');
+        redirect('laporan/stokminus');
+    }
+    public function reportStokMinus($id){     
+
+        $data['title'] = 'Report Stok Minus';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['menu'] = $this->db->get('user_menu')->result_array();        
+        $data['tAssets'] = $this->barang->getSumAssets();
+        $data['tStock'] = $this->barang->getSumStock();
+        $data['kategori'] = $this->barang->allkategori();
+        $data['report'] = $this->report->getCetakStokMinus($id);
+        $html = $this->load->view('laporan/print_stok_minus', $data,TRUE);
+        if ($id > 0) {
+            $namadocument = 'Laporan Stok Minus Barang';
+            $dompdf = new Dompdf();
+            $old_limit = ini_set("memory_limit","120M");
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $dompdf->stream($namadocument,array('Attachment'=>0));
+            exit(0);            
+        }else {
+            $this->load->view('laporan/print_barang', $data);
+        }
+    }
+
+
 }
