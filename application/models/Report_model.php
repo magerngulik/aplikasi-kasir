@@ -61,7 +61,7 @@ class Report_model extends CI_Model
 
 
 
-     public function getCetakPembelian($keyword = null,$pilih =null){
+    public function getCetakPembelian($keyword = null,$pilih =null){
         $this->db->select('*');
         $this->db->from('pembelian a'); 
         $this->db->join('pembelian_detail b', 'a.no_pembelian=b.no_pembelian', 'left');
@@ -78,6 +78,14 @@ class Report_model extends CI_Model
         return $this->db->get()->result_array(); 
     }
 
+// ---------------------------------------------------------------------report penjualan----------------------------------------------------------------------------------------------------
+
+    public function getNotaPenjualan(){
+        $this->db->select('*');
+        $this->db->from('penjualan'); 
+        return $this->db->get()->result_array();
+     }
+
 
 
     public function getPenjualan($limit,$start,$keyword=null,$pilih){
@@ -90,13 +98,29 @@ class Report_model extends CI_Model
         if ($pilih == 1) {
             $this->db->like('a.tgl_nota',$keyword);
         }elseif ($pilih ==2) {
-            $this->db->like('a.no_notabeli',$keyword);
-        } elseif ($pilih ==3)  {
-            $this->db->like('a.jenis',$keyword);
+            $this->db->like('a.no_nota',$keyword);
         }
-        
         $this->db->limit($limit,$start);
         return $this->db->get()->result_array(); 
      }
+
+
+     public function getCetakPenjualan($keyword = null,$pilih =null){
+        $this->db->select('*');
+        $this->db->from('penjualan a'); 
+        $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
+        $this->db->join('barang c', 'b.idbarang=c.idbarang', 'left');
+        $this->db->join('konsumen d', 'a.idpelanggan=d.idpelanggan', 'left');
+        $this->db->order_by('c.idbarang','DESC');
+        if ($pilih == 1) {
+            $this->db->like('a.tgl_nota',$keyword);
+        }elseif ($pilih ==2) {
+            $this->db->like('a.no_nota',$keyword);
+        }
+        return $this->db->get()->result_array(); 
+    }
+
+
+
 }
 

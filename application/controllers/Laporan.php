@@ -218,7 +218,7 @@ class Laporan extends CI_Controller
        
         $data['report'] = $this->report->getCetakPembelian($data['keyword'], $data['pilih']);
         $html = $this->load->view('laporan/print_pembelian', $data,TRUE); 
-        $namadocument = 'Laporan Barang';
+        $namadocument = 'Laporan Pembelian Barang';
         $dompdf = new Dompdf();
         $old_limit = ini_set("memory_limit","120M");
         $dompdf->loadHtml($html);
@@ -230,6 +230,85 @@ class Laporan extends CI_Controller
     }
 
 
+    public function datapenjualan(){
+        $data['title'] = 'Data Penjualan';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['menu'] = $this->db->get('user_menu')->result_array();   
+        $data['nota_beli'] = $this->report->getNotaPenjualan();  
+        $data['pilihjual'] = 0;          
+        $config['base_url'] = 'http://localhost/admin-graha/laporan/datapenjualan';
+
+        if ($this->input->post('tgl_msk')) {
+            $data['key']= $this->input->post('tgl_msk');
+            $data['pilihjual'] = 1;
+            $this->session->set_userdata('pilihjual', $data['pilihjual']);
+            $this->session->set_userdata('key', $data['key']);
+        }
+        else {
+            $data['key']= $this->session->userdata('key');
+        }
+        
+        if ($this->input->post('no_nota')) {
+            $data['key']= $this->input->post('no_nota');
+            $data['pilihjual'] = 2;
+            $this->session->set_userdata('pilihjual', $data['pilihjual']);
+            $this->session->set_userdata('key', $data['key']);           
+        } else {
+            $data['key']= $this->session->userdata('key');
+        }
+      
+        $this->db->like('tgl_nota',$data['key']);  
+        $this->db->or_like('no_nota',$data['key']);
+        $this->db->from('penjualan');
+
+
+        $config['total_rows'] =$this->db->count_all_results(); 
+        $data['total_rows'] = $config['total_rows']; 
+        $config['per_page'] = 10;
+        
+        //inisialisasi
+        $this->pagination->initialize($config);     
+        $data['start'] = $this->uri->segment(3);
+        $data['poin'] = $this->report->getPenjualan($config['per_page'], $data['start'],$data['key'],$data['pilihjual']);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('laporan/data_penjualan', $data);
+        $this->load->view('templates/footer');
+    }
+
+
+    public function reportPenjualan(){     
+        $data['title'] = 'Report Penjualan';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['menu'] = $this->db->get('user_menu')->result_array();        
+        $data['tAssets'] = $this->barang->getSumAssets();
+        $data['tStock'] = $this->barang->getSumStock();
+        $data['kategori'] = $this->barang->allkategori();
+
+        $data['key'] = $this->session->userdata('key');
+        $data['pilihjual'] = $this->session->userdata('pilihjual');
+
+
+        $data['report'] = $this->report->getCetakPenjualan($data['key'], $data['pilihjual']);
+        $html = $this->load->view('laporan/print_penjualan', $data,TRUE); 
+        $namadocument = 'Laporan Penjualan Barang';
+        $dompdf = new Dompdf();
+        $old_limit = ini_set("memory_limit","120M");
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream($namadocument,array('Attachment'=>0));
+        exit(0);            
+       
+    }
+
+    public function alldataPenjualan(){
+        $this->session->unset_userdata('key');
+        $this->session->unset_userdata('pilihjual');
+        redirect('laporan/datapenjualan');
+    }
 
     
     

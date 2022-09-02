@@ -33,24 +33,50 @@
            
                 <thead>
                     <tr>
-                        <th style="width: 20%; font-size: 15px;">Nota Beli</th>
-                        <th scope="col">Tanggal Masuk</th>
-                        <th scope="col">Pemasok</th>
-                        <th scope="col">Jenis</th>
-                        <th scope="col">Total Bayar</th>
+                        <th style="width: 20%; font-size: 15px;">Tgl Nota</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Harga Jual</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Laba</th>
                     </tr>
                 </thead>           
         
+                    <?php $gtotal =0?>
+                    <?php $glaba =0?>
                     <?php foreach ($report as $sm) : ?>
                     <tr>        
-                        <td><?= $sm['no_notabeli']; ?></td>
-                        <td><?= $sm['tgl_masuk']; ?></td>
-                        <td><?= $sm['nm_supplier']; ?></td>
-                        <td><?= $sm['jenis']; ?></td>
-                        <td><?= $total = $sm['jumlah'] * $sm['harga_beli'];  ?></td>
+                        <td><?= $sm['tgl_nota']; ?></td>
+                        <td><?= $sm['nm_barang']; ?></td>
+                        <td><?= $sm['harga_jual']; ?></td>
+                        <td><?= $sm['jumlah']; ?></td>
+                        <td><?= $total = $sm['jumlah'] * $sm['harga_jual'];  ?></td>
+                        <td><?= $sm['laba']; ?></td>
+
+                        <?php $gtotal = $gtotal + $total;
+                              $glaba = $glaba + $sm['laba'];
+                        ?>
                     </tr>
                     <?php endforeach; ?>
             
+            </table>
+            <table border="0">
+                <tr>
+                    <td>----------------------------</td>
+                </tr>
+                <tr>
+                    <td style="width: 40%;">Total Penjualan</td>
+                    <td> : </td>
+                    <td><?= "Rp. ", $gtotal; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 40%;">Total Laba</td>
+                    <td> : </td>
+                    <td><?= "Rp. ", $glaba, " ,-"; ?></td>
+                </tr>
+                <tr>
+                    <td>----------------------------</td>
+                </tr>
             </table>
 
 
