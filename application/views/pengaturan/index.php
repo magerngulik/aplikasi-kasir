@@ -22,6 +22,8 @@
                 <thead>
                     <tr>
                         <th scope="col">Nota Beli</th>
+                        <th scope="col">No Pembelian</th>
+                        <th scope="col">Id Barang</th>
                         <th scope="col">Tanggal Masuk</th>
                         <th scope="col">Pemasok</th>
                         <th scope="col">Jenis</th>
@@ -43,13 +45,15 @@
                     <tr>
                     <!-- idpelanggan	nm_konsumen	alamat no_telp -->
                         <td><?= $sm['no_notabeli']; ?></td>
+                        <td><?= $sm['no_pembelian']; ?></td>
+                        <td><?= $sm['idbarang']; ?></td>
                         <td><?= $sm['tgl_masuk']; ?></td>
                         <td><?= $sm['nm_supplier']; ?></td>
                         <td><?= $sm['jenis']; ?></td>
                         <td><?= $total = $sm['jumlah'] * $sm['harga_beli'];  ?></td>
                                           
                         <td>
-                            <a href="<?= base_url('data/hapusDataBarang/').$sm['no_notabeli']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
+                            <a href="<?= base_url('pengaturan/recoverPembelian/').$sm['no_pembelian'].'/'.$sm['idbarang']?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                     <?php ?>

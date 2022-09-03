@@ -42,11 +42,6 @@ class Report_model extends CI_Model
         return $this->db->get()->result_array(); 
     }
 
-
-
-
-
-
     public function getCetakBarang($keyword = null){
         $this->db->select('*');
         $this->db->from('barang a'); 
