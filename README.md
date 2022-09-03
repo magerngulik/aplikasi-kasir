@@ -1,6 +1,5 @@
 
 # Program Kasir Graha Bangunan
----
 Merupakan aplikasi yang di kembangkan untuk membantu proses transaksi pada toko graha Bangunan
 
 ## Tech Stack
