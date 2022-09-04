@@ -395,5 +395,6 @@ class Laporan extends CI_Controller
     }
 
     public function add(){}
+    public function add2(){}
   
 }
