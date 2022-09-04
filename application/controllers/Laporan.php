@@ -393,5 +393,7 @@ class Laporan extends CI_Controller
         $this->load->helper('download');
         force_download($db_name,$backup);
     }
+
+    public function add(){}
   
 }
