@@ -5,7 +5,7 @@ class Konsumen_model extends CI_Model
 {
     // konsumen idpelanggan	nm_konsumen	alamat no_telp
     public function getKonsumen($limit,$start,$keyword=null){    
-        $this->db->order_by('idpelanggan','DESC'); 
+        $this->db->order_by('idpelanggan','ASC'); 
         if ($keyword) {
             $this->db->like('nm_konsumen',$keyword);
             $this->db->or_like('alamat',$keyword);

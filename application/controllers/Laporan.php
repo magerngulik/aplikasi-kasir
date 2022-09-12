@@ -16,18 +16,20 @@ class Laporan extends CI_Controller
         $this->load->model('Supiler_model', 'suppiler');
         $this->load->model('Konsumen_model', 'konsumen');
         $this->load->model('Report_model', 'report');
-        is_logged_in();
     }
 // ------------------------------------------------------------Barang-----------------------------------------------------------------------
-    public function index()
+
+public function index()
     {
+        $base = base_url();        
         $data['title'] = 'Data Barang';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
         $data['menu'] = $this->db->get('user_menu')->result_array();        
         $data['tAssets'] = $this->barang->getSumAssets();
         $data['tStock'] = $this->barang->getSumStock();
         $data['kategori'] = $this->barang->allkategori();
-        $config['base_url'] = 'http://localhost/admin-graha/laporan/index';
+        $config['base_url'] = $base.'/laporan/index';
         if ( $this->input->post('keyword')) {
             $data['keyword']= $this->input->post('keyword');
             $this->session->set_userdata('keyword', $data['keyword']);
@@ -88,6 +90,7 @@ class Laporan extends CI_Controller
     }
 
     public function datapelanggan(){
+      
         $data['title'] = 'Data Pelangan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['menu'] = $this->db->get('user_menu')->result_array();        

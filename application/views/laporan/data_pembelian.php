@@ -35,7 +35,7 @@
                             <input type="date" class="form-control" placeholder="Masukan Keyword Pencarian" name="tgl_msk" autocomplete="off" autofocus>
 
                             <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                         <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>                    
@@ -54,7 +54,7 @@
                                     </select>
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                             <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>                    
@@ -70,7 +70,7 @@
                                             <option>Kredit</option>                             
                                     </select>
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                             <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>            
@@ -83,7 +83,7 @@
                         <th scope="col">Nota Beli</th>
                         <th scope="col">Tanggal Masuk</th>
                         <th scope="col">Pemasok</th>
-                        <th scope="col">Jenis</th>
+                        <th scope="col">Nama Barang</th>
                         <th scope="col">Total Bayar</th>
                     </tr>
                 </thead>
@@ -103,7 +103,7 @@
                         <td><?= $sm['no_notabeli']; ?></td>
                         <td><?= $sm['tgl_masuk']; ?></td>
                         <td><?= $sm['nm_supplier']; ?></td>
-                        <td><?= $sm['jenis']; ?></td>
+                        <td><?= $sm['nm_barang']; ?></td>
                         <td><?= $total = $sm['jumlah'] * $sm['harga_beli'];  ?></td>
                     </tr>
                     <?php ?>

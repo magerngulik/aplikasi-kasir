@@ -20,7 +20,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="Masukan Keyword Pencarian" aria-label="Recipient's username" aria-describedby="basic-addon2" name="keyword" autocomplete="off" autofocus>
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                         </form>
@@ -82,8 +82,8 @@
                         <td><?= $sm['nm_kategori']; ?></td>
                    
                         <td>
-                            <a href="<?= base_url('data/editBarang/').$sm['idbarang']; ?>" class="badge badge-success">edit</a>
-                            <a href="<?= base_url('data/hapusDataBarang/').$sm['idbarang']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="badge badge-danger">Delete</a>
+                            <a href="<?= base_url('data/editBarang/').$sm['idbarang']; ?>" class="btn btn-primary">edit</a>
+                            <a href="<?= base_url('data/hapusDataBarang/').$sm['idbarang']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
 
                         </td>
                     </tr>

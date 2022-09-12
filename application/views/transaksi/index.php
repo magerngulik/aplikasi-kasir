@@ -23,7 +23,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="Masukan Keyword Pencarian" aria-label="Recipient's username" aria-describedby="basic-addon2" name="keyword" autocomplete="off" autofocus>
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                         </form>
@@ -70,7 +70,7 @@
                         <td><?= $sm['idsupplier']; ?></td>
                         <td><?= $sm['nm_supplier']; ?></td>   
                         <td>
-                            <a href="<?= base_url('transaksi/pembelian/').$sm['idsupplier']; ?>" class="btn btn-success">pilih</a>                           
+                            <a href="<?= base_url('transaksi/pembelian/').$sm['idsupplier']; ?>" class="btn btn-primary">pilih</a>                           
                         </td>
                     </tr>
                     <?php ?>

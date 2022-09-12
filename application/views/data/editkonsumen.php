@@ -11,7 +11,7 @@
             <?= $this->session->flashdata('name'); ?>
 
             <div class="form-group row">
-                <label for="email" class="col-sm-2 col-form-label">Nama Kategori</label>
+                <label for="email" class="col-sm-2 col-form-label">Nama Konsumen</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="nm_konsumen" name="nm_konsumen" value="<?= $kategori['nm_konsumen']; ?>" >
                     <?= form_error('nm_konsumen', '<small class="text-danger pl-3">', '</small>'); ?>

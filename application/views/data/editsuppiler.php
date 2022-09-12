@@ -45,7 +45,7 @@
           
             <div class="form-group row justify-content-end">
                     <div class="col-md-10">
-                        <button type="submit" name=editBuku class="btn btn-primary">Edit</button>         
+                        <button type="submit" name=editsuppiler class="btn btn-primary">Edit</button>         
                     <a href="<?= base_url('data/suppiler'); ?>" name=editBuku class="btn btn-secondary ">Kembali</a>
                 </div>
             </div>

@@ -6,7 +6,7 @@ class Supiler_model extends CI_Model
     // supplier idsupplier	nm_supplier	alamat	no_telp	kontak
 
     public function getSupplier($limit,$start,$keyword=null){     
-        $this->db->order_by('idsupplier','DESC'); 
+        $this->db->order_by('idsupplier','ASC'); 
         if ($keyword) {
             $this->db->like('nm_supplier',$keyword);
             $this->db->or_like('alamat',$keyword);

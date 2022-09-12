@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Transaksi extends CI_Controller
 {
+    
     public function __construct()
     {
         parent::__construct();
@@ -17,6 +18,7 @@ class Transaksi extends CI_Controller
     }
 
     public function index(){
+        
         $config['base_url'] = 'http://localhost/admin-graha/transaksi/index/';
         
         $data['title'] = 'Pembelian';
@@ -95,6 +97,7 @@ class Transaksi extends CI_Controller
             $this->db->insert('pembelian',$data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Nota berhasil buat!</div>');
             $this->session->set_userdata('detailid', $no_pembeli);
+            $this->cart->destroy(); 
             redirect('transaksi/detailPembelian/');
         }
         
@@ -145,6 +148,7 @@ class Transaksi extends CI_Controller
 
     public function iddatabarang($id){
         $this->session->set_userdata('idbarang', $id);
+        // $this->cart->destroy(); 
         redirect('transaksi/inputDetail');
     }
 
@@ -209,7 +213,16 @@ class Transaksi extends CI_Controller
 
 
     public function simpanData(){
+
+
        $cart = $this->cart->contents();   
+       if(empty($cart)){
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data tidak Boleh Kosong</div>');
+        redirect('transaksi/detailPembelian');
+
+       };
+     
+
        foreach ($cart as $key => $value) {
            $no_pembelian = $this->session->userdata('detailid');
            $idbarang =$value['id'];
@@ -235,13 +248,14 @@ class Transaksi extends CI_Controller
             'no_pembelian' => $no_pembelian,
             'idbarang' => $idbarang,
             'harga_beli' => $hrg_beli,
-            'jumlah' => $jumlah,
+            'jumlah' => $jml_beli,
             ];
             $this->db->insert('pembelian_detail',$data); 
        };
        $this->cart->destroy(); 
        $this->session->unset_userdata('idbarang');
        $this->session->unset_userdata('detailid');
+       $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Transaksi Pembelian Berhasil</div>');
        redirect('transaksi/');
     }
 
@@ -319,7 +333,21 @@ public function inputNmKonsumen($id){
         $this->load->view('transaksi/penjualan/nm_suppiler', $data);
         $this->load->view('templates/footer');
 
-    } else {          
+    } else {     
+
+        $this->db->select('*');
+        $this->db->from('penjualan a'); 
+        $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
+        $this->db->order_by('a.no_nota','DESC');
+        $this->db->limit(1); 
+        $hasilquery = $this->db->get()->result_array(); 
+        
+        if ($hasilquery <= 0) {
+            echo "Data Kosong";  
+        }else {
+            echo "Data Tersedia";  
+        }     
+
         $basicformat = "2201070";
         $num = $this->db->count_all_results('penjualan', FALSE); 
         $katnumber = (int)$num + 1;
@@ -345,6 +373,7 @@ public function inputNmKonsumen($id){
         $this->db->insert('penjualan',$data);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Nota berhasil buat!</div>');
         $this->session->set_userdata('detailjual', $no_pembeli);
+        $this->cart->destroy(); 
         redirect('transaksi/detailPenjualan/');
     }   
 }
@@ -415,6 +444,7 @@ public function hapusNotaPenjualan(){
   //dari detail ke input
     public function iddatapenjualan($id){
         $this->session->set_userdata('idjualbarang', $id);
+    
         redirect('transaksi/inputPenjualan');
     }
 
@@ -463,11 +493,12 @@ public function hapusNotaPenjualan(){
     }
 
     public function simpanPenjualan(){
-        $cart = $this->cart->contents();           
-        //  Detail penjualan
-        // no_nota	idbarang jumlah	harga_jual laba
-        //  data penjualan
-        // no_nota	tgl_nota jml_bayar idpegawai idpelanggan
+       $cart = $this->cart->contents();           
+        if(empty($cart)){
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data tidak Boleh Kosong</div>');
+        redirect('transaksi/detailPenjualan');
+
+       };
         foreach ($cart as $key => $value) {
             $no_pembelian = $this->session->userdata('detailjual');
             $idbarang =$value['idbarang'];

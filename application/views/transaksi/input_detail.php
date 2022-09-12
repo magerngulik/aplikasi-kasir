@@ -69,6 +69,7 @@
                         <td><?= $sm['idbarang']; ?></td>
                         <td><?= $sm['nm_barang']; ?></td>
                         <td><?= $sm['hrg_modal']; ?></td>
+  
 
                    
                         <td>

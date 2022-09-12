@@ -44,8 +44,8 @@
                         <?php endforeach; ?>
 
                         <td>
-                            <a href="<?= base_url('data/editPegawai/').$sm['id']; ?>" class="badge badge-success">edit</a>
-                            <a href="<?= base_url('data/hapusPegawai/').$sm['id']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="badge badge-danger">Delete</a>
+                            <a href="<?= base_url('data/editPegawai/').$sm['id']; ?>" class="btn btn-primary">edit</a>
+                            <a href="<?= base_url('data/hapusPegawai/').$sm['id']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                     <?php $i++; ?>

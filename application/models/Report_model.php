@@ -64,7 +64,8 @@ class Report_model extends CI_Model
         $this->db->join('pembelian_detail b', 'a.no_pembelian=b.no_pembelian', 'left');
         $this->db->join('barang c', 'b.idbarang=c.idbarang', 'left');
         $this->db->join('supplier d', 'a.idsupplier=d.idsupplier', 'left');
-        $this->db->order_by('c.idbarang','DESC');
+        $this->db->order_by('a.tgl_masuk','DESC');
+        $this->db->order_by('a.no_pembelian','DESC');
         if ($pilih == 1) {
             $this->db->like('a.tgl_masuk',$keyword);
         }elseif ($pilih ==2) {
@@ -118,7 +119,8 @@ class Report_model extends CI_Model
         $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
         $this->db->join('barang c', 'b.idbarang=c.idbarang', 'left');
         $this->db->join('konsumen d', 'a.idpelanggan=d.idpelanggan', 'left');
-        $this->db->order_by('c.idbarang','DESC');
+        $this->db->order_by('a.tgl_nota','DESC');
+        $this->db->order_by('a.no_nota','DESC');
         if ($pilih == 1) {
             $this->db->like('a.tgl_nota',$keyword);
         }elseif ($pilih ==2) {

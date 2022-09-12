@@ -12,7 +12,7 @@
             <?= $this->session->flashdata('name'); ?>
 
             <div class="form-group row">
-                <label for="email" class="col-sm-2 col-form-label">Nama Barang</label>
+                <label for="email" class="col-sm-2 col-form-label">Nama Pegawai</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="name" name="name" value="<?= $user['name']; ?>" >
                     <?= form_error('nm_barang', '<small class="text-danger pl-3">', '</small>'); ?>
@@ -20,7 +20,7 @@
             </div>
          
             <div class="form-group row">
-                <label for="email" class="col-sm-2 col-form-label">Menu</label>
+                <label for="email" class="col-sm-2 col-form-label">Role</label>
             <div class="col-sm-10">
                         <select name="role" id="role" class="form-control">
                             <?php foreach ($role as $m) : ?>                                     

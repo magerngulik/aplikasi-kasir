@@ -74,17 +74,33 @@ class Data extends CI_Controller
             $this->load->view('templates/footer');
         } else {
 
-            $basicformat = "8990001";
-            $katpoin = $this->input->post('kategori');              
-            $this->db->select('COUNT(nm_barang) as total', false);
+            $basicformat = "9990001";
+            $katpoin = $this->input->post('kategori');       
+            $this->db->select_max('idbarang');       
             $this->db->from('barang a'); 
             $this->db->join('kategori b', 'a.idkategori=b.idkategori', 'left');
             $this->db->where('a.idkategori',$katpoin);
+      
             $num = $this->db->get()->row_array();    
             $katnumber = (int)$katpoin;
-            $hasikKategori="";
+            $hasikKategori="";     
             
-               
+             $num['idbarang'];
+            // echo "   ";
+            
+            // echo "<br>";
+            // echo "Last Charakter=";
+             $bil= substr($num['idbarang'],-3);
+            // echo "   ";
+            // echo "<br>";
+            // echo "Last Kategorie=";
+            $a= substr($num['idbarang'],7,-3);
+            // echo "   ";
+            // echo "<br>";
+            // echo "Last +1=";
+            $count = (int)$bil +1;
+            // echo "<br>";
+
             if($katnumber <10){
                 $hasikKategori = "00".(string) $katnumber;
             }else
@@ -94,12 +110,12 @@ class Data extends CI_Controller
             if($katnumber >=100){
                 $hasikKategori = $katnumber;
             }
-           
-            
-            $text1 = (int)$num['total'];
-            $count = $text1 + 1;
+
+            $text1 = (int)$num['idbarang'];
+            // echo 
+            // $count = $text1 + 1;
             $total = "";
-            
+        
             if($count <10){
                 $total = "00".(string) $count;
             }else
@@ -109,9 +125,25 @@ class Data extends CI_Controller
             if($count >=100){
                 $total = $count;
             }
-           
 
-            $endpoin = $basicformat.$hasikKategori.$total;
+            // echo "   ";
+            // echo "<br>";
+            // echo "Basic Format=";
+            // echo $basicformat;
+            // echo "   ";
+            // echo "<br>";
+            // echo "No Kategorie=";
+            // echo $hasikKategori;
+            // echo "   ";
+            // echo "<br>";
+            // echo "No Urutan=";
+            // echo $total;
+            // echo "   ";
+            // echo "<br>";
+
+            echo $endpoin = $basicformat.$hasikKategori.$total;
+            
+
             $data = [
                 'idbarang' => $endpoin,
                 'nm_barang' => $this->input->post('nm_barang'),
@@ -311,7 +343,7 @@ class Data extends CI_Controller
         redirect('data/suppiler');
     }
 
-    public function editSuppiler($id){
+    public function editsuppiler($id){
   
     // <!-- supplier idsupplier	nm_supplier	alamat	no_telp	kontak -->
         $data['title'] = 'Kategori';
@@ -329,7 +361,7 @@ class Data extends CI_Controller
             $this->load->view('templates/header', $data);
             $this->load->view('templates/sidebar', $data);
             $this->load->view('templates/topbar', $data);
-            $this->load->view('data/editsuppiler ', $data);
+            $this->load->view('data/editsuppiler', $data);
             $this->load->view('templates/footer');
         } else {
             $data = [
@@ -441,7 +473,7 @@ public function hapusKonsumen($id){
 public function editKonsumen($id){
 
     // konsumen idpelanggan	nm_konsumen	alamat no_telp
-    $data['title'] = 'Edit Kategori';
+    $data['title'] = 'Edit Konsumen';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['subMenu'] = $this->menu->getSubMenu();
     $data['menu'] = $this->db->get('user_menu')->result_array();
@@ -566,9 +598,7 @@ public function editKonsumen($id){
         $data['subMenu'] = $this->menu->getSubMenu();
         $data['menu'] = $this->db->get('user_menu')->result_array();
 
-        $this->form_validation->set_rules('name', 'Username', 'required|trim|is_unique[user.email]', [
-            'is_unique' => 'Username ini sudah di gunakan!','required' => 'Username tidak boleh kosong!'
-        ]);
+        $this->form_validation->set_rules('name', 'Username', 'required|trim');
        
         $this->form_validation->set_rules('role', 'Role', 'required|trim',['required' => 'Role Harus dipilih!']);
 

@@ -31,7 +31,7 @@
                                     </select>
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                         </form>

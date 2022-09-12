@@ -25,9 +25,7 @@
                 <?=  $this->pagination->create_links();?>
                 </div>
             </div>     
-
             <div class="row">
-
                 <form action="" method="post">
                 <div class="form-group col">
                     <label for="notabeli" class="col col-form-label">Tanggal Masuk</label>
@@ -35,7 +33,7 @@
                             <input type="date" class="form-control" placeholder="Masukan Keyword Pencarian" name="tgl_msk" autocomplete="off" autofocus>
 
                             <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                         <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>                    
@@ -54,7 +52,7 @@
                                     </select>
 
                                 <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
                                 </div>
                             </div>
                             <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>                    
@@ -68,7 +66,7 @@
                         <th style="width: 20%; font-size: 15px;">Tgl Nota</th>
                         <th scope="col">Nama Barang</th>
                         <th scope="col">Harga Jual</th>
-                        <th scope="col">Qty</th>
+                        <th scope="col">Jumlah</th>
                         <th scope="col">Total</th>
                         <th scope="col">Laba</th>
                     </tr>

@@ -30,8 +30,8 @@
                         <th scope="row"><?= $i; ?></th>
                         <td><?= $sm['nm_kategori']; ?></td>
                         <td>
-                            <a href="<?= base_url('data/editKategori/').$sm['idkategori']; ?>" class="badge badge-success">edit</a>
-                            <a href="<?= base_url('data/hapusDataKategori/').$sm['idkategori']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="badge badge-danger">Delete</a>
+                            <a href="<?= base_url('data/editKategori/').$sm['idkategori']; ?>" class="btn btn-primary">edit</a>
+                            <a href="<?= base_url('data/hapusDataKategori/').$sm['idkategori']; ?>" onclick="return confirm('Apakah anda ingin menghapus data ini?');" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                     <?php $i++; ?>
