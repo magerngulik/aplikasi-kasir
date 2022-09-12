@@ -92,9 +92,11 @@ class Transaksi extends CI_Controller
                 'idsupplier' => $this->input->post('idsupplier'),
                 'jenis' => $this->input->post('jenis'),
                 'tgl_masuk' => $this->input->post('tgl_msk'),
-                'catatan' => ''
+                'catatan' => '',
+                'nm_supplier' => $this->input->post('nm_supplier')
             ];
-            $this->db->insert('pembelian',$data);
+            // $this->db->insert('pembelian',$data);
+            $this->session->set_userdata($data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Nota berhasil buat!</div>');
             $this->session->set_userdata('detailid', $no_pembeli);
             $this->cart->destroy(); 
@@ -106,7 +108,17 @@ class Transaksi extends CI_Controller
     public function detailPembelian(){
         // getNopembelian
         $id = $this->session->userdata('detailid');
-        $data['nota_pembelian'] = $this->transaksi->getNopembelian($id);
+        $data['nota_pembelian'] = [
+            'no_pembelian' => $this->session->userdata('no_pembelian'), 
+            'no_notabeli' => $this->session->userdata('no_notabeli'), 
+            'idpegawai' => $this->session->userdata('idpegawai'), 
+            'idsupplier' => $this->session->userdata('idsupplier'), 
+            'jenis' => $this->session->userdata('jenis'), 
+            'tgl_masuk' => $this->session->userdata('tgl_masuk'), 
+            'catatan' => $this->session->userdata('catatan'), 
+            'nm_supplier' => $this->session->userdata('nm_supplier'), 
+
+        ];
         $data['cart']= $this->cart->contents();
         $data['title'] = 'Input Detail Pembelian';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -135,7 +147,6 @@ class Transaksi extends CI_Controller
         
         //inisialisasi
         $this->pagination->initialize($config);
-        
         $data['start'] = $this->uri->segment(3);
         $data['poin'] = $this->menu->getBarang($config['per_page'], $data['start'], $data['keyword']);
         $this->load->view('templates/header', $data);
@@ -192,8 +203,8 @@ class Transaksi extends CI_Controller
                 'stok' => $this->input->post('stok'),
                 'hrg_modal' => $this->input->post('hrg_modal'),
                 'hrg_satuan' => $this->input->post('hrg_satuan'),
-
             );     
+            
             $this->cart->insert($data);             
             redirect('transaksi/detailPembelian');
         }   
@@ -221,7 +232,17 @@ class Transaksi extends CI_Controller
         redirect('transaksi/detailPembelian');
 
        };
-     
+
+       $datapembelian = [
+        'no_pembelian' => $this->session->userdata('no_pembelian'), 
+        'no_notabeli' => $this->session->userdata('no_notabeli'), 
+        'idpegawai' => $this->session->userdata('idpegawai'), 
+        'idsupplier' => $this->session->userdata('idsupplier'), 
+        'jenis' => $this->session->userdata('jenis'), 
+        'tgl_masuk' => $this->session->userdata('tgl_masuk'), 
+        'catatan' => $this->session->userdata('catatan'),                 
+       ];
+       $this->db->insert('pembelian',$datapembelian);
 
        foreach ($cart as $key => $value) {
            $no_pembelian = $this->session->userdata('detailid');
@@ -255,6 +276,13 @@ class Transaksi extends CI_Controller
        $this->cart->destroy(); 
        $this->session->unset_userdata('idbarang');
        $this->session->unset_userdata('detailid');
+       $this->session->unset_userdata('no_pembelian'); 
+       $this->session->unset_userdata('no_notabeli'); 
+       $this->session->unset_userdata('idpegawai'); 
+       $this->session->unset_userdata('idsupplier'); 
+       $this->session->unset_userdata('jenis'); 
+       $this->session->unset_userdata('tgl_masuk'); 
+       $this->session->unset_userdata('catatan');   
        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Transaksi Pembelian Berhasil</div>');
        redirect('transaksi/');
     }
@@ -368,11 +396,14 @@ public function inputNmKonsumen($id){
             'tgl_nota' => $this->input->post('tgl_msk'),
             'jml_bayar' => 0,
             'idpegawai' => $this->input->post('id_pegawai'),
-            'idpelanggan' => $this->input->post('idpelanggan') 
+            'idpelanggan' => $this->input->post('idpelanggan') ,
+            'nm_konsumen' => $this->input->post('nm_konsumen') 
         ];
-        $this->db->insert('penjualan',$data);
+        // $this->db->insert('penjualan',$data);
+        $this->session->set_userdata($data);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Nota berhasil buat!</div>');
         $this->session->set_userdata('detailjual', $no_pembeli);
+        
         $this->cart->destroy(); 
         redirect('transaksi/detailPenjualan/');
     }   
@@ -404,7 +435,18 @@ public function hapusNotaPenjualan(){
 
     public function detailPenjualan(){
         $id = $this->session->userdata('detailjual');
-        $data['nota_jual'] = $this->transaksi->getNoPenjualan($id);
+        
+        // $data['nota_jual'] = $this->transaksi->getNoPenjualan($id);
+        $data['nota_jual'] = [
+            'no_nota' => $this->session->userdata('no_nota'),
+            'tgl_nota' => $this->session->userdata('tgl_nota'),
+            'jml_bayar' => $this->session->userdata('jml_bayar'),
+            'idpegawai' => $this->session->userdata('idpegawai'),
+            'idpelanggan' => $this->session->userdata('idpelanggan'),
+            'nm_konsumen' => $this->session->userdata('nm_konsumen')
+        ];
+
+        //ini card nya
         $data['cart']= $this->cart->contents();
         $data['title'] = 'Input Detail Penjualan';
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
@@ -497,8 +539,18 @@ public function hapusNotaPenjualan(){
         if(empty($cart)){
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data tidak Boleh Kosong</div>');
         redirect('transaksi/detailPenjualan');
-
        };
+
+       $datapenjualan = [
+        'no_nota' => $this->session->userdata('no_nota'),
+        'tgl_nota' => $this->session->userdata('tgl_nota'),
+        'jml_bayar' => $this->session->userdata('jml_bayar'),
+        'idpegawai' => $this->session->userdata('idpegawai'),
+        'idpelanggan' => $this->session->userdata('idpelanggan'),
+        // 'nm_konsumen' => $this->session->userdata('nm_konsumen')
+       ];
+        $this->db->insert('penjualan',$datapenjualan);
+        
         foreach ($cart as $key => $value) {
             $no_pembelian = $this->session->userdata('detailjual');
             $idbarang =$value['idbarang'];
@@ -527,6 +579,13 @@ public function hapusNotaPenjualan(){
         $this->cart->destroy(); 
         $this->session->unset_userdata('idjualbarang');
         $this->session->unset_userdata('detailjual');
+        $this->session->unset_userdata('no_nota');
+        $this->session->unset_userdata('tgl_nota');
+        $this->session->unset_userdata('jml_bayar');
+        $this->session->unset_userdata('idpegawai');
+        $this->session->unset_userdata('idpelanggan');
+        $this->session->unset_userdata('nm_konsumen');
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Penjualan berhasil</div>');
         redirect('transaksi/penjualan');
     }
 

@@ -1,84 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Barang Graha Bangunan</title>
-
+    <title>Laporan Penjualan</title>
     <style>
-         th {
-            background-color: #1e90ff;
-            color: white;
-            font-size: 15px;
-            text-align: center;
-            font-weight: 600
-
-            }
-         td{
-            font-size: 15px;
-            text-transform: capitalize;
-            text-align: center;
-            font-weight: 600
-         }   
+        th,
+        td,
+        tr {
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
     </style>
-
 </head>
+
 <body>
+    <center>
+        <h2 style="font-family: sans-serif">Laporan Konsumen</h2>
+    </center>
+    <h4><?= "Pekanbaru,", date('d-M-Y');  ?></h4>
+    <table>
+        <thead style="text-align: center;">
+            <tr style="text-align: center; background-color: tomato;">
+                <th>Tgl Nota</th>
+                <th>Nama Barang</th>
+                <th>Harga Jual</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Laba</th>
+            </tr>
+        </thead>
 
-    <h4 style="text-align:center; padding: 0px; margin: 0px;" >DAFTAR PENJUALAN</h4>
-    <h4 style="text-align:center; padding: 0px; margin: 0px" >GRAHA BANGUNAN</h4>
-    <br>
-    <table border="1" cellpadding="10" cellspacing="0" style=" width: 100%; ">
-           
-                <thead>
-                    <tr>
-                        <th style="width: 20%; font-size: 15px;">Tgl Nota</th>
-                        <th scope="col">Nama Barang</th>
-                        <th scope="col">Harga Jual</th>
-                        <th scope="col">Qty</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Laba</th>
-                    </tr>
-                </thead>           
-        
-                    <?php $gtotal =0?>
-                    <?php $glaba =0?>
-                    <?php foreach ($report as $sm) : ?>
-                    <tr>        
-                        <td><?= $sm['tgl_nota']; ?></td>
-                        <td><?= $sm['nm_barang']; ?></td>
-                        <td><?= $sm['harga_jual']; ?></td>
-                        <td><?= $sm['jumlah']; ?></td>
-                        <td><?= $total = $sm['jumlah'] * $sm['harga_jual'];  ?></td>
-                        <td><?= $sm['laba']; ?></td>
+        <?php $gtotal = 0 ?>
+        <?php $glaba = 0 ?>
+        <?php foreach ($report as $sm) : ?>
+            <tr style="text-align: center">
+                <td style="background-color: #FFEFD5;"><?= $sm['tgl_nota']; ?></td>
+                <td style="background-color: #FFDAB9;"><?= $sm['nm_barang']; ?></td>
+                <td style="background-color: #FFEFD5;"><?= $sm['harga_jual']; ?></td>
+                <td style="background-color: #FFDAB9;"><?= $sm['jumlah']; ?></td>
+                <td style="background-color: #FFEFD5;"><?= $total = $sm['jumlah'] * $sm['harga_jual'];  ?></td>
+                <td style="background-color: #FFDAB9;"><?= $sm['laba']; ?></td>
 
-                        <?php $gtotal = $gtotal + $total;
-                              $glaba = $glaba + $sm['laba'];
-                        ?>
-                    </tr>
-                    <?php endforeach; ?>
-            
-            </table>
-            <table border="0">
-                <tr>
-                    <td>----------------------------</td>
-                </tr>
-                <tr>
-                    <td style="width: 40%;">Total Penjualan</td>
-                    <td> : </td>
-                    <td><?= "Rp. ", $gtotal; ?></td>
-                </tr>
-                <tr>
-                    <td style="width: 40%;">Total Laba</td>
-                    <td> : </td>
-                    <td><?= "Rp. ", $glaba, " ,-"; ?></td>
-                </tr>
-                <tr>
-                    <td>----------------------------</td>
-                </tr>
-            </table>
+                <?php $gtotal = $gtotal + $total;
+                $glaba = $glaba + $sm['laba'];
+                ?>
+            </tr>
+        <?php endforeach; ?>
+
+    </table>
+    <table border="0">
+        <tr>
+            <td style="width: 40%;">Total Penjualan</td>
+            <td> : </td>
+            <td><?= "Rp. ", $gtotal; ?></td>
+        </tr>
+        <tr>
+            <td style="width: 40%;">Total Laba</td>
+            <td> : </td>
+            <td><?= "Rp. ", $glaba, " ,-"; ?></td>
+        </tr>
+    </table>
 
 
 </body>
+
 </html>

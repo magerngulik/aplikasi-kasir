@@ -1,56 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Barang Graha Bangunan</title>
-
+    <title>Laporan Konsumen</title>
     <style>
-         th {
-            background-color: #1e90ff;
-            color: white;
-            font-size: 15px;
-            text-align: center;
-            font-weight: 600
-
-            }
-         td{
-            font-size: 15px;
-            text-transform: capitalize;
-            text-align: center;
-            font-weight: 600
-         }   
+        th,
+        td,
+        tr {
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
     </style>
-
 </head>
+
 <body>
 
-    <h4 style="text-align:center; padding: 0px; margin: 0px;" >DAFTAR KONSUMEN</h4>
-    <h4 style="text-align:center; padding: 0px; margin: 0px" >GRAHA BANGUNAN</h4>
-    <br>
-    <table border="1" cellpadding="10" cellspacing="0" style=" width: 100%; ">
-           
-                <thead>
-                    <tr>
-                        <th style="width: 20%; font-size: 15px;">ID Konsumen</th>
-                        <th>Nama Konsumen</th>
-                        <th>Alamat</th>
-                        <th>No Telpon</th>
-                    </tr>
-                </thead>           
-        
-                    <?php foreach ($report as $sm) : ?>
-                    <tr>        
-                        <td><?= $sm['idpelanggan']; ?></td>
-                        <td><?= $sm['nm_konsumen']; ?></td>
-                        <td><?= $sm['alamat']; ?></td>
-                        <td><?= $sm['no_telp']; ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-            
-            </table>
+    <center>
+        <h2 style="font-family: sans-serif">Laporan Konsumen</h2>
+    </center>
+    <h4><?= "Pekanbaru,", date('d-M-Y');  ?></h4>
+    <table>
+        <thead style="text-align: center;">
+            <tr style="text-align: center; background-color: tomato;">
+                <th>ID Konsumen</th>
+                <th>Nama Konsumen</th>
+                <th>Alamat</th>
+                <th>No Telpon</th>
+            </tr>
+        </thead>
 
+        <?php foreach ($report as $sm) : ?>
+            <tr style="text-align: center">
+                <td style="background-color: #FFEFD5;"><?= $sm['idpelanggan']; ?></td>
+                <td style="background-color: #FFDAB9;"><?= $sm['nm_konsumen']; ?></td>
+                <td style="background-color: #FFEFD5;"><?= $sm['alamat']; ?></td>
+                <td style="background-color: #FFDAB9;"><?= $sm['no_telp']; ?></td>
+            </tr>
+        <?php endforeach; ?>
 
+    </table>
 </body>
+
 </html>
