@@ -55,7 +55,7 @@
             </tr>
         <?php endforeach; ?>
     </table>
-</center>
+    </center>
     
     <table border="0">
         <tr>
