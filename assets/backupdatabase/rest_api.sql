@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2022 at 06:48 PM
+-- Generation Time: Sep 13, 2022 at 10:11 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.4.22
 
@@ -44,8 +44,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `email`, `image`, `password`, `role_id`, `is_active`, `date_created`, `id_pegawai`) VALUES
-(12, 'admingraha', 'admingraha', 'default.jpg', '$2y$10$NwpU5an0YlY3Uw0AUGCMXu31EuUcgPRqJmCaON7HIKvCP7HkauFWK', 1, 1, 1660051020, 'PEG-001'),
-(16, 'Kasirgraha', 'Kasirgraha', 'default.jpg', '$2y$10$TCWoqi/TpB8OwugXO4k7wOcx/UOQLWu07Ps5n1zQuLcYbsHWtqnYW', 2, 1, 1661221953, 'PEG-002');
+(12, 'admin', 'admin', 'default.jpg', '$2y$10$NwpU5an0YlY3Uw0AUGCMXu31EuUcgPRqJmCaON7HIKvCP7HkauFWK', 1, 1, 1660051020, 'PEG-001'),
+(16, 'Kasirgraha', 'Kasirgraha', 'default.jpg', '$2y$10$TCWoqi/TpB8OwugXO4k7wOcx/UOQLWu07Ps5n1zQuLcYbsHWtqnYW', 2, 1, 1661221953, 'PEG-002'),
+(17, 'admingraha', 'admingraha', 'default.jpg', '$2y$10$NwpU5an0YlY3Uw0AUGCMXu31EuUcgPRqJmCaON7HIKvCP7HkauFWK', 3, 1, 1660051020, 'PEG-001');
 
 -- --------------------------------------------------------
 
@@ -69,9 +70,13 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 (19, 2, 15),
 (22, 1, 16),
 (23, 1, 5),
-(24, 1, 17),
 (25, 1, 14),
-(26, 1, 3);
+(38, 3, 5),
+(39, 3, 14),
+(40, 3, 16),
+(41, 3, 2),
+(42, 1, 3),
+(43, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -116,7 +121,8 @@ CREATE TABLE `user_role` (
 
 INSERT INTO `user_role` (`id`, `role`) VALUES
 (1, 'Administrator'),
-(2, 'Kasir');
+(2, 'Kasirgraha'),
+(3, 'Admingraha');
 
 -- --------------------------------------------------------
 
@@ -234,13 +240,13 @@ ALTER TABLE `user_token`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `user_menu`
@@ -252,7 +258,7 @@ ALTER TABLE `user_menu`
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user_sub_menu`
