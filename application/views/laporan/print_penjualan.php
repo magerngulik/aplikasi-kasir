@@ -23,6 +23,9 @@
         <h2 style="font-family: sans-serif">Laporan Konsumen</h2>
     </center>
     <h4><?= "Pekanbaru,", date('d-M-Y');  ?></h4>
+    <center>
+
+    
     <table>
         <thead style="text-align: center;">
             <tr style="text-align: center; background-color: tomato;">
@@ -51,8 +54,9 @@
                 ?>
             </tr>
         <?php endforeach; ?>
-
     </table>
+</center>
+    
     <table border="0">
         <tr>
             <td style="width: 40%;">Total Penjualan</td>

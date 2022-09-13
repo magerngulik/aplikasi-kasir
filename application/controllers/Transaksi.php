@@ -654,7 +654,7 @@ public function hapusNotaPenjualan(){
         $data['subMenu'] = $this->menu->getSubMenu();
         
         if ($this->input->post('jml')) {
-            $data['total'] = $this->input->post('jml') * $this->input->post('hrg_modal');
+            $data['total'] = $this->input->post('jml') * $this->input->post('hrg_satuan');
          }else {
             $data['total']=0;
          }

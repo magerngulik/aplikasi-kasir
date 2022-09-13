@@ -23,6 +23,7 @@
         <h2 style="font-family: sans-serif">Laporan Konsumen</h2>
     </center>
     <h4><?= "Pekanbaru,", date('d-M-Y');  ?></h4>
+    <center>
     <table>
         <thead style="text-align: center;">
             <tr style="text-align: center; background-color: tomato;">
@@ -48,6 +49,7 @@
         <?php endforeach; ?>
 
     </table>
+        </center>
 
 
 </body>

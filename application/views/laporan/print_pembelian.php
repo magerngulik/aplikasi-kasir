@@ -22,8 +22,9 @@
 
     <center>
         <h2 style="font-family: sans-serif">Laporan Pembelian</h2>
-    </center>
+ 
     <h4><?= "Pekanbaru,", date('d-M-Y');  ?></h4>
+    <center>
     <table style="margin: auto;" padding>
         <thead style="text-align: center;">
             <tr style="text-align: center; background-color: tomato;">
@@ -46,6 +47,7 @@
         <?php endforeach; ?>
 
     </table>
+    </center>
 
 
 </body>

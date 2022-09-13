@@ -22,7 +22,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" oncontextmenu="return false">
 
     <!-- Page Wrapper -->
     <div id="wrapper"> 

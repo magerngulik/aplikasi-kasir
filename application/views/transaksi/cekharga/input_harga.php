@@ -27,6 +27,13 @@
                 </div>          
             </div>
             <div class="form-group row">
+                <label for="email" class="col-sm-2 col-form-label">Harga Jual</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="hrg_satuan" name="hrg_satuan"  value ="<?=$ketbarang['hrg_satuan']?>">
+                    <?= form_error('hrg_satuan', '<small class="text-danger pl-3">', '</small>'); ?>
+                </div>          
+            </div>
+            <div class="form-group row">
                 <label for="email" class="col-sm-2 col-form-label">Jumlah</label>
                 <div class="col-sm-6">
                     <input type="text" class="form-control" id="jml" name="jml">

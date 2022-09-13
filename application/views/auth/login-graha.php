@@ -9,7 +9,7 @@
 
 </head>
 
-<body>
+<body oncontextmenu="return false">
 	<div class="signin">
 		<div class="back-img">
 			<div class="sign-in-text">
