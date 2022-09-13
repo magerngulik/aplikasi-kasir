@@ -295,15 +295,21 @@ public function index()
 
 
         $data['report'] = $this->report->getCetakPenjualan($data['key'], $data['pilihjual']);
+        
+        $pilih = $data['pilihjual'];
         $html = $this->load->view('laporan/print_penjualan', $data,TRUE); 
-        $namadocument = 'Laporan Penjualan Barang';
-        $dompdf = new Dompdf();
-        $old_limit = ini_set("memory_limit","120M");
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $dompdf->stream($namadocument,array('Attachment'=>0));
-        exit(0);            
+        if ($data['pilihjual'] > 0 ) {
+            $namadocument = 'Laporan Penjualan Barang';
+            $dompdf = new Dompdf();
+            $old_limit = ini_set("memory_limit","120M");
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $dompdf->stream($namadocument,array('Attachment'=>0));
+        }else {
+            $this->load->view('laporan/print_penjualan', $data);
+        }
+ 
        
     }
 
