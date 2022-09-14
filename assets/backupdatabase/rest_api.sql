@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2022 at 10:11 PM
+-- Generation Time: Sep 14, 2022 at 08:53 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.4.22
 
@@ -74,9 +74,8 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 (38, 3, 5),
 (39, 3, 14),
 (40, 3, 16),
-(41, 3, 2),
 (42, 1, 3),
-(43, 1, 2);
+(45, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -146,11 +145,11 @@ CREATE TABLE `user_sub_menu` (
 INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active`) VALUES
 (1, 1, 'Dashboard', 'admin', 'fas fa-fw fa-tachometer-alt', 1),
 (2, 2, 'My Profile', 'user', 'fas fa-fw fa-user', 1),
-(3, 2, 'Edit Profile', 'user/edit', 'fas fa-fw fa-user-edit', 1),
+(3, 2, 'Edit Profile', 'user/edit', 'fas fa-fw fa-user-edit', 0),
 (4, 3, 'Menu Management', 'menu', 'fas fa-fw fa-folder', 1),
 (5, 3, 'Submenu Management', 'menu/submenu', 'fas fa-fw fa-folder-open', 1),
 (7, 1, 'Role', 'admin/role', 'fas fa-fw fa-user-tie', 1),
-(8, 2, 'Change Password', 'user/changepassword', 'fas fa-fw fa-key', 1),
+(8, 2, 'Change Password', 'user/changepassword', 'fas fa-fw fa-key', 0),
 (16, 5, 'Kategori', 'data/kategori', 'fas fa-fw fa-list', 1),
 (17, 5, 'Suppiler', 'data/suppiler', 'fas fa-fw fa-list', 1),
 (18, 5, 'Konsumen', 'data/konsumen', 'fas fa-fw fa-list', 1),
@@ -246,7 +245,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `user_menu`
