@@ -106,7 +106,7 @@ class Report_model extends CI_Model
 // ---------------------------------------------------------------------report penjualan----------------------------------------------------------------------------------------------------
 
     public function getNotaPenjualan(){
-        $this->db->select('*');
+        $this->db->select('no_nota');
         $this->db->from('penjualan'); 
         return $this->db->get()->result_array();
      }

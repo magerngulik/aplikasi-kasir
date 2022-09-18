@@ -20,7 +20,7 @@
 
 <body>
     <center>
-        <h2 style="font-family: sans-serif">Laporan Konsumen</h2>
+        <h2 style="font-family: sans-serif">Laporan Penjualan</h2>
     </center>
     <h4><?= "Pekanbaru,", date('d-M-Y');  ?></h4>
     <center>

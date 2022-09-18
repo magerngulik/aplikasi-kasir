@@ -347,7 +347,7 @@ public function penjualan(){
 }
 
 public function inputNmKonsumen($id){
-    $data['title'] = 'Input Nota Pembelian';
+    $data['title'] = 'Input Nota Penjualan';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['subMenu'] = $this->menu->getSubMenu();
     $data['menu'] = $this->db->get('user_menu')->result_array();
@@ -376,6 +376,12 @@ public function inputNmKonsumen($id){
             echo "Data Tersedia";  
         }     
 
+        $today = date('ymd');
+		$char = $today;
+
+
+
+        
         $basicformat = "2201070";
         $num = $this->db->count_all_results('penjualan', FALSE); 
         $katnumber = (int)$num + 1;
