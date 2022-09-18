@@ -363,41 +363,49 @@ public function inputNmKonsumen($id){
 
     } else {     
 
-        $this->db->select('*');
-        $this->db->from('penjualan a'); 
-        $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
-        $this->db->order_by('a.no_nota','DESC');
-        $this->db->limit(1); 
-        $hasilquery = $this->db->get()->result_array(); 
+        // $this->db->select('*');
+        // $this->db->from('penjualan a'); 
+        // $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
+        // $this->db->order_by('a.no_nota','DESC');
+        // $this->db->limit(1); 
+        // $hasilquery = $this->db->get()->result_array(); 
         
-        if ($hasilquery <= 0) {
-            echo "Data Kosong";  
-        }else {
-            echo "Data Tersedia";  
-        }     
-
+        // if ($hasilquery <= 0) {
+        //     echo "Data Kosong";  
+        // }else {
+        //     echo "Data Tersedia";  
+        // }     
+        // $query = "SELECT max(no_nota) as max_id FROM penjualan WHERE no_nota LIKE '{$char}%' ORDER BY no_nota DESC LIMIT 1";
+        
         $today = date('ymd');
-		$char = $today;
+		echo $char = $today;
+        $this->db->select_max('no_nota');
+        $this->db->from('penjualan');
+        $this->db->like('no_nota',$today );
+        $date = $this->db->get()->row_array();   
+        $getId = $date['no_nota'];
+        $no = substr($getId, -4, 4);
+        $no = (int) $no;
+        $no += 1;
+        $no_pembeli = $char . sprintf("%04s", $no);
 
 
-
-        
-        $basicformat = "2201070";
-        $num = $this->db->count_all_results('penjualan', FALSE); 
-        $katnumber = (int)$num + 1;
-        $hasikKategori="";             
-        if($katnumber <10){
-            $hasikKategori = "00".(string) $katnumber;
-        }else
-        if ($katnumber <100) {
-            $hasikKategori = "0".(string) $katnumber;   
-        }else
-        if($katnumber >=100){
-            $hasikKategori = $katnumber;
-        }    
-        $no_pembeli = $basicformat.$hasikKategori;
+        // $basicformat = "2201070";
+        // $num = $this->db->count_all_results('penjualan', FALSE); 
+        // $katnumber = (int)$num + 1;
+        // $hasikKategori="";             
+        // if($katnumber <10){
+        //     $hasikKategori = "00".(string) $katnumber;
+        // }else
+        // if ($katnumber <100) {
+        //     $hasikKategori = "0".(string) $katnumber;   
+        // }else
+        // if($katnumber >=100){
+        //     $hasikKategori = $katnumber;
+        // }    
+        // $no_pembeli = $basicformat.$hasikKategori;
         $data = [    
-        // no_nota	tgl_nota jml_bayar idpegawai idpelanggan
+            // no_nota	tgl_nota jml_bayar idpegawai idpelanggan
             'no_nota' => $no_pembeli,
             'tgl_nota' => $this->input->post('tgl_msk'),
             'jml_bayar' => 0,
@@ -409,7 +417,6 @@ public function inputNmKonsumen($id){
         $this->session->set_userdata($data);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Nota berhasil buat!</div>');
         $this->session->set_userdata('detailjual', $no_pembeli);
-        
         $this->cart->destroy(); 
         redirect('transaksi/detailPenjualan/');
     }   
@@ -672,7 +679,6 @@ public function hapusNotaPenjualan(){
         $this->load->view('templates/footer');
  
     }
-
     
     public function alldataHarga(){
         $this->session->unset_userdata('keyword');

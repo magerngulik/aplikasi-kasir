@@ -301,7 +301,7 @@ class Data extends CI_Controller
     }
 
    public function tambahSupplier(){
-    $data['title'] = 'Tambah Data Barang';
+    $data['title'] = 'Tambah Data Suppiler';
     $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
     $data['kategori'] = $this->barang->allkategori();
     

@@ -58,7 +58,11 @@
 
                 
             </div>
-            <a class="btn btn-primary" href="">Nota</a>
+            <div class="col">
+                    <p class="font-weight-bold mb-0">Total Penjualan : <?= rupiah($total_jual['total']) ?></p>
+                    <p class="font-weight-bold mb-0">Total Laba  : <?= rupiah($total_laba['laba']) ?> </p>                
+            </div>
+
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -97,7 +101,13 @@
         </div>
     </div>
 
-
+        <?php 
+            function rupiah($angka){
+        
+                $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
+                return $hasil_rupiah;
+            }        
+            ?>
 
 </div>
 <!-- /.container-fluid -->

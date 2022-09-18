@@ -94,12 +94,8 @@ public function index()
         $pdf->Cell(23, 8, 'Harga Jual', '1', '0', 'C', true);
         $pdf->Cell(15, 8, 'Stok', '1', '0', 'C', true);
         $pdf->Cell(35, 8, 'Kategori', '1', '1', 'C', true);
-
-
         $totalstok = 0;
         $totalaset = 0;
-
-    
         foreach ($data['report']  as $row) { 
 
             $pdf->SetFont('Arial', 'B', 8);
@@ -117,7 +113,6 @@ public function index()
                 $totalstok = $totalstok + $row['stok'];
             }
         }
-
         $pdf->Cell(15, 8, '', '0', '1', 'C');
         $pdf->Cell(15, 8, 'Total Stok ', '0', '0', 'C');
         $pdf->SetFont('Arial', 'B', 12);
@@ -129,7 +124,6 @@ public function index()
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetTextColor(255, 255, 255);
         $pdf->Cell(35, 8, "Rp $totalaset", '0', '1', 'C', true);
-
         $pdf->Output();
 
     }
@@ -319,10 +313,9 @@ public function index()
         $data['nota_beli'] = $this->report->getNotaPenjualan();  
         $data['pilihjual'] = 0;          
         $config['base_url'] = 'http://localhost/admin-graha/laporan/datapenjualan';
-
         if ($this->input->post('tgl_msk')) {
             $data['key']= $this->input->post('tgl_msk');
-            $data['pilihjual'] = 1;
+            $data['pilihjual'] = 1;     
             $this->session->set_userdata('pilihjual', $data['pilihjual']);
             $this->session->set_userdata('key', $data['key']);
         }
@@ -338,21 +331,18 @@ public function index()
         } else {
             $data['key']= $this->session->userdata('key');
         }
-      
         $this->db->like('tgl_nota',$data['key']);  
         $this->db->or_like('no_nota',$data['key']);
         $this->db->from('penjualan');
-
-
         $config['total_rows'] =$this->db->count_all_results(); 
         $data['total_rows'] = $config['total_rows']; 
         $config['per_page'] = 10;
-        
         //inisialisasi
         $this->pagination->initialize($config);     
         $data['start'] = $this->uri->segment(3);
+        $data['total_jual'] =$this->report->getSumTjual($data['key'],$data['pilihjual']);
+        $data['total_laba'] =$this->report->getSumData($data['key'],$data['pilihjual']);
         $data['poin'] = $this->report->getPenjualan($config['per_page'], $data['start'],$data['key'],$data['pilihjual']);
-
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -371,10 +361,7 @@ public function index()
 
         $data['key'] = $this->session->userdata('key');
         $data['pilihjual'] = $this->session->userdata('pilihjual');
-
-
-        $data['report'] = $this->report->getCetakPenjualan($data['key'], $data['pilihjual']);
-        
+        $data['report'] = $this->report->getCetakPenjualan($data['key'], $data['pilihjual']);   
         $pilih = $data['pilihjual'];
         $pdf = new FPDF('p', 'mm', 'A4');
         $pdf->SetFont('Arial', 'B', 16);
