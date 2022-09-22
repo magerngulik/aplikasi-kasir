@@ -30,7 +30,7 @@
                             <input type="date" class="form-control" placeholder="Masukan Keyword Pencarian" name="tgl_msk" autocomplete="off" autofocus>
 
                             <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit" name= "submit">Cari</button>
+                                    <button class="btn btn-primary" type="submittgl" name= "submittgl">Cari</button>
                                 </div>
                             </div>
                         <?= form_error('no_nota', '<small class="text-danger pl-3">', '</small>'); ?>                    
@@ -66,7 +66,9 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th style="width: 20%; font-size: 15px;">Tgl Nota</th>
+
+                        <th scope="col">No</th>
+                        <th style="width: 20%; font-size: 15px;">Tanggal Nota</th>
                         <th scope="col">Nama Barang</th>
                         <th scope="col">Harga Jual</th>
                         <th scope="col">Jumlah</th>
@@ -87,6 +89,7 @@
                     <?php foreach ($poin as $sm) : ?>
                     <tr>
                     <!-- idpelanggan	nm_konsumen	alamat no_telp -->
+                        <th scope="row"><?= ++$start; ?></th>
                         <td><?= $sm['tgl_nota']; ?></td>
                         <td><?= $sm['nm_barang']; ?></td>
                         <td><?= $sm['harga_jual']; ?></td>

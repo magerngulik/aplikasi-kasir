@@ -83,7 +83,7 @@
         </div>
         <!-- tabel data nota -->       
         <div class="col-lg-4 ml-5 mb-3">
-            <h1 class="h3 text-gray-800">Keterangan Nota Pembelian</h1>
+            <h1 class="h3 text-gray-800">Keterangan Nota Penjualan</h1>
                 <form action="" method="post">
                           
                 <!-- no_nota	tgl_nota jml_bayar	idpegawai	idpelanggan -->

@@ -21,6 +21,7 @@ class Data extends CI_Controller
         $data['tAssets'] = $this->barang->getSumAssets();
         $data['tStock'] = $this->barang->getSumStock();
         $config['base_url'] = 'http://localhost/admin-graha/data/index';
+        
         if ( $this->input->post('keyword')) {
             $data['keyword']= $this->input->post('keyword');
             $this->session->set_userdata('keyword', $data['keyword']);
