@@ -179,11 +179,11 @@ class Transaksi extends CI_Controller
         $id = $this->session->userdata('detailid');
         $data['nota_pembelian'] = $this->transaksi->getNopembelian($id);
 
-        $this->form_validation->set_rules('nm_barang', 'Nama Barang', 'required|trim',['required' =>'No Nota Tidak boleh kosong']);
-        $this->form_validation->set_rules('hrg_modal', 'Harga Modal', 'required|trim');
+        $this->form_validation->set_rules('nm_barang', 'Nama Barang', 'required|trim',['required' =>'Nama Barang Tidak boleh kosong']);
+        $this->form_validation->set_rules('hrg_modal', 'Harga Modal', 'required|trim',['required' =>'Harga Tidak boleh kosong']);
         $this->form_validation->set_rules('stok', 'Stok', 'required|trim' ,['required' =>'Jenis harus di pilih']);
-        $this->form_validation->set_rules('hrg_beli', 'Harga Beli', 'required|trim|numeric',['required' =>'Tanggal Masuk harus di pilih', 'numeric' => 'Harus berisi data angka']);   
-        $this->form_validation->set_rules('jml_beli', 'Jumlah Beli', 'required|trim|numeric',['required' =>'Tanggal Masuk harus di pilih','numeric' => 'Harus berisi data angka']);   
+        $this->form_validation->set_rules('hrg_beli', 'Harga Beli', 'required|trim|numeric',['required' =>'Harga beli tidak boleh kosong', 'numeric' => 'Harus berisi data angka']);   
+        $this->form_validation->set_rules('jml_beli', 'Jumlah Beli', 'required|trim|numeric',['required' =>'Jumlah beli tidak boleh kosong','numeric' => 'Harus berisi data angka']);   
 
         if ($this->form_validation->run() ==  false) {
             $this->load->view('templates/header', $data);
@@ -224,8 +224,6 @@ class Transaksi extends CI_Controller
 
 
     public function simpanData(){
-
-
        $cart = $this->cart->contents();   
        if(empty($cart)){
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data tidak Boleh Kosong</div>');
@@ -255,7 +253,7 @@ class Transaksi extends CI_Controller
            $hrg_satuan =$value['hrg_satuan'];        
            //rumus
            $tambahStok = $stok + $jml_beli;         
-           echo $updateharga = (($hrg_beli * $jml_beli) + ($stok * $hrg_modal)) / $tambahStok;
+           $updateharga = (($hrg_beli * $jml_beli) + ($stok * $hrg_modal)) / $tambahStok;
             //end rumus
 
            $dataUpade = [
@@ -363,20 +361,7 @@ public function inputNmKonsumen($id){
 
     } else {     
 
-        // $this->db->select('*');
-        // $this->db->from('penjualan a'); 
-        // $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
-        // $this->db->order_by('a.no_nota','DESC');
-        // $this->db->limit(1); 
-        // $hasilquery = $this->db->get()->result_array(); 
-        
-        // if ($hasilquery <= 0) {
-        //     echo "Data Kosong";  
-        // }else {
-        //     echo "Data Tersedia";  
-        // }     
-        // $query = "SELECT max(no_nota) as max_id FROM penjualan WHERE no_nota LIKE '{$char}%' ORDER BY no_nota DESC LIMIT 1";
-        
+       
         $today = date('ymd');
 		echo $char = $today;
         $this->db->select_max('no_nota');
@@ -388,22 +373,6 @@ public function inputNmKonsumen($id){
         $no = (int) $no;
         $no += 1;
         $no_pembeli = $char . sprintf("%04s", $no);
-
-
-        // $basicformat = "2201070";
-        // $num = $this->db->count_all_results('penjualan', FALSE); 
-        // $katnumber = (int)$num + 1;
-        // $hasikKategori="";             
-        // if($katnumber <10){
-        //     $hasikKategori = "00".(string) $katnumber;
-        // }else
-        // if ($katnumber <100) {
-        //     $hasikKategori = "0".(string) $katnumber;   
-        // }else
-        // if($katnumber >=100){
-        //     $hasikKategori = $katnumber;
-        // }    
-        // $no_pembeli = $basicformat.$hasikKategori;
         $data = [    
             // no_nota	tgl_nota jml_bayar idpegawai idpelanggan
             'no_nota' => $no_pembeli,
@@ -513,9 +482,11 @@ public function hapusNotaPenjualan(){
       $idJual = $this->session->userdata('detailjual');
       $data['nota_jual'] = $this->transaksi->getNoPenjualan($idJual);
       $this->form_validation->set_rules('hrg_modal', 'Harga Beli', 'required|trim|numeric',['required' =>'Harga Modal harus di pilih', 'numeric' => 'Harus berisi data angka']);   
-      $this->form_validation->set_rules('stok', 'Stok', 'greater_than[0]|required|trim|numeric',['required' =>'Stok harus di isi','numeric' => 'Harus berisi data angka', 'greater_than' => 'Stok Habis']); 
+      $this->form_validation->set_rules('stok', 'Stok', 'required|trim|numeric',['required' =>'Stok harus di isi','numeric' => 'Harus berisi data angka']); 
       $this->form_validation->set_rules('hrg_satuan', 'Harga Jual', 'greater_than['.$this->input->post('hrg_modal').']|required|trim|numeric',['required' =>'Harga Jual harus di isi','numeric' => 'Harus berisi data angka', 'greater_than' => 'Tidak boleh di bawah harga modal']); 
-      $this->form_validation->set_rules('jml_beli', 'Jumlah beli', 'less_than_equal_to['.$this->input->post('stok').']|required|trim|numeric',['required' =>'Jumlah beli harus di isi','numeric' => 'Harus berisi data angka','less_than_equal_to' => 'nilai pembelian tidak boleh melebihi jumlah stok']);   
+      $this->form_validation->set_rules('jml_beli', 'Jumlah beli', 'required|trim|numeric',['required' =>'Jumlah beli harus di isi','numeric' => 'Harus berisi data angka']);   
+
+
       if ($this->form_validation->run() ==  false) {
           $this->load->view('templates/header', $data);
           $this->load->view('templates/sidebar', $data);

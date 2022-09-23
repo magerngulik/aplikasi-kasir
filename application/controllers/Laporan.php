@@ -234,7 +234,6 @@ public function index()
         } else {
             $data['keyword']= $this->session->userdata('keyword');
         }
-        
         $this->db->from('pembelian a'); 
         $this->db->join('pembelian_detail b', 'a.no_pembelian=b.no_pembelian', 'left');
         $this->db->like('a.tgl_masuk',$data['keyword']);  
@@ -243,12 +242,9 @@ public function index()
         $config['total_rows'] =$this->db->count_all_results(); 
         $data['total_rows'] = $config['total_rows']; 
         $config['per_page'] = 10;
-        
-        //inisialisasi
         $this->pagination->initialize($config);     
         $data['start'] = $this->uri->segment(3);
         $data['poin'] = $this->report->getPembelian($config['per_page'], $data['start'],$data['keyword'],$data['pilih']);
-
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
@@ -320,6 +316,8 @@ public function index()
             $data['pilihjual'] = 1;     
             $this->session->set_userdata('pilihjual', $data['pilihjual']);
             $this->session->set_userdata('key', $data['key']);
+            $config['total_rows'] =0;
+            $data['start']=0;
         }
         else {
             $data['key']= $this->session->userdata('key');
@@ -328,7 +326,9 @@ public function index()
             $data['key']= $this->input->post('no_nota');
             $data['pilihjual'] = 2;
             $this->session->set_userdata('pilihjual', $data['pilihjual']);
-            $this->session->set_userdata('key', $data['key']);           
+            $this->session->set_userdata('key', $data['key']); 
+            $config['total_rows'] =0;
+            $data['start']=0;          
         } else {
             $data['key']= $this->session->userdata('key');
         }
@@ -336,15 +336,16 @@ public function index()
         $this->db->from('penjualan a'); 
         $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
         $this->db->or_like('a.tgl_nota',$data['key']);
-        $count = $this->db->count_all_results(); 
-        $config['total_rows'] = $count;
+        $this->db->or_like('a.no_nota',$data['key']);
+        $config['total_rows'] = $this->db->count_all_results(); ;
         $config['per_page'] = 10;
         $data['total_rows'] = $config['total_rows']; 
+        
         //inisialisasi
         $this->pagination->initialize($config);     
         $data['total_jual'] =$this->report->getSumTjual($data['key'],$data['pilihjual']);
         $data['total_laba'] =$this->report->getSumData($data['key'],$data['pilihjual']);
-        $data['start'] = $this->uri->segment(4);
+        $data['start'] = $this->uri->segment(3);
         $data['poin'] = $this->report->getPenjualan($config['per_page'], $data['start'],$data['key'],$data['pilihjual']);
 
         $this->load->view('templates/header', $data);
