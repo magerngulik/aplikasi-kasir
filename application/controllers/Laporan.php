@@ -323,6 +323,7 @@ public function index()
         else {
             $data['key']= $this->session->userdata('key');
         }
+
         if ($this->input->post('no_nota')) {
             $data['key']= $this->input->post('no_nota');
             $data['pilihjual'] = 2;
@@ -333,24 +334,42 @@ public function index()
         } else {
             $data['key']= $this->session->userdata('key');
         }
+        $pilih =  $this->session->userdata('pilihjual');
         
         $this->db->from('penjualan a'); 
         $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
-        if ($data['pilihjual'] == 0) {
+
+
+        if ($data['pilihjual'] == 0 && empty($pilih)) {
             $this->db->or_like('a.tgl_nota',$tanggal);
-        }else {
+        }elseif ($pilih == 1) {
             $this->db->or_like('a.tgl_nota',$data['key']);
+            # code...
+        }elseif($pilih == 2){
             $this->db->or_like('a.no_nota',$data['key']);    
         }
+        
         $config['total_rows'] = $this->db->count_all_results(); ;
         $config['per_page'] = 10;
         $data['total_rows'] = $config['total_rows']; 
-        $this->pagination->initialize($config);     
         $data['total_jual'] =$this->report->getSumTjual($data['key'],$data['pilihjual']);
         $data['total_laba'] =$this->report->getSumData($data['key'],$data['pilihjual']);
+        $this->pagination->initialize($config);     
         $data['start'] = $this->uri->segment(3);
-        $data['poin'] = $this->report->getPenjualan($config['per_page'], $data['start'],$data['key'],$data['pilihjual']);
 
+        $pilih =  $this->session->userdata('pilihjual');
+        if (empty($pilih)) {
+            $data['pilih'] =0;
+        }else{
+            $data['pilih'] =  $this->session->userdata('pilihjual');
+        };
+
+        // echo "Data yang akan dipilih=";
+        // echo $data['pilih'];
+        // echo " Data yang akan data selected=";
+        // echo $data['pilihjual']; 
+
+        $data['poin'] = $this->report->getPenjualan($config['per_page'], $data['start'],$data['key'],$data['pilih']);
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);

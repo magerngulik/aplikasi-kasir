@@ -110,7 +110,7 @@ class Report_model extends CI_Model
         return $this->db->get()->result_array();
      }
 
-    public function getPenjualan($limit,$start,$keyword=null,$pilih=0){
+    public function getPenjualan($limit,$start,$keyword=null,$pilih=null){
         $this->db->select('*');
         $this->db->from('penjualan a'); 
         $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
