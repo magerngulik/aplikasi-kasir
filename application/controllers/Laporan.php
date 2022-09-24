@@ -332,11 +332,16 @@ public function index()
             $data['start']=0;          
         } else {
             $data['key']= $this->session->userdata('key');
-        }  
+        }
+        
         $this->db->from('penjualan a'); 
         $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
-        $this->db->or_like('a.tgl_nota',$data['key']);
-        $this->db->or_like('a.no_nota',$data['key']);
+        if ($data['pilihjual'] == 0) {
+            $this->db->or_like('a.tgl_nota',$tanggal);
+        }else {
+            $this->db->or_like('a.tgl_nota',$data['key']);
+            $this->db->or_like('a.no_nota',$data['key']);    
+        }
         $config['total_rows'] = $this->db->count_all_results(); ;
         $config['per_page'] = 10;
         $data['total_rows'] = $config['total_rows']; 
