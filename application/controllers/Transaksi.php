@@ -499,9 +499,14 @@ public function hapusNotaPenjualan(){
         $hargaJual =  $this->input->post('hrg_satuan');
         $jml = $this->input->post('jml_beli');
 
+
+        $ele1 = $this->input->post('idbarang');
+        $ele2 = $this->input->post('hrg_satuan');
         $laba = ($hargaJual - $hargaModal) * $jml;
+
+        $id = $ele1.$ele2;
         $data = array(
-              'id' => $this->input->post('idbarang'),
+              'id' => $id,
               'price' => 0,
               'name' => 'barang', 
               'qty' => 1,
