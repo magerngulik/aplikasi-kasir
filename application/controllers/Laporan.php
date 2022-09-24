@@ -310,7 +310,8 @@ public function index()
         $data['nota_beli'] = $this->report->getNotaPenjualan();  
         $data['pilihjual'] = 0;          
         $config['base_url'] = 'http://localhost/admin-graha/laporan/datapenjualan';
-
+        $tanggal =  date("Y/m/d");
+ 
         if ($this->input->post('tgl_msk')) {
             $data['key']= $this->input->post('tgl_msk');
             $data['pilihjual'] = 1;     
@@ -331,8 +332,7 @@ public function index()
             $data['start']=0;          
         } else {
             $data['key']= $this->session->userdata('key');
-        }
-        
+        }  
         $this->db->from('penjualan a'); 
         $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
         $this->db->or_like('a.tgl_nota',$data['key']);
@@ -340,8 +340,6 @@ public function index()
         $config['total_rows'] = $this->db->count_all_results(); ;
         $config['per_page'] = 10;
         $data['total_rows'] = $config['total_rows']; 
-        
-        //inisialisasi
         $this->pagination->initialize($config);     
         $data['total_jual'] =$this->report->getSumTjual($data['key'],$data['pilihjual']);
         $data['total_laba'] =$this->report->getSumData($data['key'],$data['pilihjual']);
@@ -354,6 +352,76 @@ public function index()
         $this->load->view('laporan/data_penjualan', $data);
         $this->load->view('templates/footer');
     }
+
+    public function reportAllPenjualan(){     
+        $data['title'] = 'Report Penjualan';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['menu'] = $this->db->get('user_menu')->result_array();        
+        $data['tAssets'] = $this->barang->getSumAssets();
+        $data['tStock'] = $this->barang->getSumStock();
+        $data['kategori'] = $this->barang->allkategori();
+
+        $data['key'] = $this->session->userdata('key');
+        $data['pilihjual'] = $this->session->userdata('pilihjual');
+        $data['report'] = $this->report->getCetakPenjualan();   
+        $pilih = $data['pilihjual'];
+        $pdf = new FPDF('p', 'mm', 'A4');
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->AddPage();
+        $pdf->Cell(191, 7, 'Laporan Penjualan', '0', '1', 'C');
+        $pdf->Cell(191, 7, 'Graha Bangunan', '0', '1', 'C');
+        $pdf->Cell(191, 7, '', '0', '1', 'C');
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(30, 8, 'Tanggal Cetak :  ', '0', '0', 'R');
+        $pdf->Cell(30, 8, 'Pekanbaru, ', '0', '0', 'R');
+        $pdf->Cell(30, 8, date('d-M-Y'), '0', '1', 'L');
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->setFillColor(100, 149, 237);
+        $pdf->Cell(20, 10, 'Tgl Nota', '1', '0', 'C', true);
+        $pdf->Cell(55, 10, 'Nama Barang', '1', '0', 'C', true);
+        $pdf->Cell(28, 10, 'Harga Jual', '1', '0', 'C', true);
+        $pdf->Cell(28, 10, 'Qty', '1', '0', 'C', true);
+        $pdf->Cell(28, 10, 'Total', '1', '0', 'C', true);
+        $pdf->Cell(28, 10, 'Laba', '1', '1', 'C', true);
+
+        $total = 0;
+        $gtotal = 0;
+        $glaba = 0;
+        foreach ($data['report']  as $row) {
+            $total = $total + $row['laba'];
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->Cell(20, 6, $row['tgl_nota'], '1', '0', 'C');
+            $pdf->Cell(55, 6, $row['nm_barang'], '1', '0', 'C');
+            $pdf->Cell(28, 6, $row['harga_jual'], '1', '0', 'C');
+            $pdf->Cell(28, 6, $row['jumlah'], '1', '0', 'C');
+            $pdf->Cell(28, 6, $total = $row['harga_jual'] * $row['jumlah'], '1', '0', 'C');
+            $pdf->Cell(28, 6, $row['laba'], '1', '1', 'C');
+            $gtotal = $gtotal + $total;
+            $glaba = $glaba + $row['laba'];
+        }
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(43, 6, '', '0', '1', 'C');
+        $pdf->Cell(46, 6, "Total Penjualan", '0', '0', 'L');
+        $pdf->Cell(46, 6, "Rp. $gtotal", '0', '1', 'L');
+        $pdf->Cell(46, 6, "Total Laba", '0', '0', 'L');
+        $pdf->Cell(46, 6, "Rp. $glaba", '0', '1', 'L');
+        $pdf->Output();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public function reportPenjualan(){     

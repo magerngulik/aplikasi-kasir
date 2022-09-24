@@ -16,6 +16,7 @@
                 <div class="col">
                 <a href="<?= base_url("laporan/reportPenjualan/") ?>" class="btn btn-primary mb-3">Cetak</a>
                 <a href="<?= base_url("laporan/alldataPenjualan/") ?>" class="btn btn-danger mb-3">All Data</a>
+           
                 </div>
 
                 <div class="col ml-auto">             

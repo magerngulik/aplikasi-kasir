@@ -110,7 +110,7 @@ class Report_model extends CI_Model
         return $this->db->get()->result_array();
      }
 
-    public function getPenjualan($limit,$start,$keyword=null,$pilih){
+    public function getPenjualan($limit,$start,$keyword=null,$pilih=0){
         $this->db->select('*');
         $this->db->from('penjualan a'); 
         $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
@@ -118,7 +118,10 @@ class Report_model extends CI_Model
         $this->db->join('konsumen d', 'a.idpelanggan=d.idpelanggan', 'left');
         $this->db->order_by('a.tgl_nota','DESC');
         $this->db->order_by('a.no_nota','DESC');
-        if ($pilih == 1) {
+        if ($pilih == 0) {
+            $date = date("Y/m/d");
+            $this->db->like('a.tgl_nota',$date);
+        }elseif ($pilih == 1) {
             $this->db->like('a.tgl_nota',$keyword);
         }elseif ($pilih ==2) {
             $this->db->like('a.no_nota',$keyword);
@@ -142,6 +145,8 @@ class Report_model extends CI_Model
         return $this->db->get()->result_array(); 
     }
 
+
+    
 
     public function getSumTjual($keyword = null,$pilih =null){
         $this->db->select('SUM(harga_jual * jumlah) as total');
