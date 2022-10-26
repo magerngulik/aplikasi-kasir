@@ -265,13 +265,10 @@ public function index()
         $data['tAssets'] = $this->barang->getSumAssets();
         $data['tStock'] = $this->barang->getSumStock();
         $data['kategori'] = $this->barang->allkategori();
-
         $data['keyword'] = $this->session->userdata('keyword');
         $data['pilih'] = $this->session->userdata('pilih');
-       
         $data['report'] = $this->report->getCetakPembelian($data['keyword'], $data['pilih']);
         $html = $this->load->view('laporan/print_pembelian', $data,TRUE); 
-
         $pdf = new FPDF('p', 'mm', 'A4');
         $pdf->SetFont('Arial', 'B', 16);
         $pdf->AddPage();
@@ -433,20 +430,6 @@ public function index()
         $pdf->Output();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function reportPenjualan(){     
         $data['title'] = 'Report Penjualan';
@@ -611,5 +594,88 @@ public function index()
         force_download($db_name,$backup);
     }
 
+    public function recovery(){
+        $data['title'] = 'Recovery Data';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['menu'] = $this->db->get('user_menu')->result_array();   
+        $data['nota_beli'] = $this->report->getNota();
+        $data['pilihan'] =0;  
+        $data['pilih'] = 0;          
+        $config['base_url'] = 'http://localhost/admin-graha/laporan/data_recovery';
+        if ($this->input->post('tgl_msk')) {
+            $data['keyword']= $this->input->post('tgl_msk');
+            $data['pilih'] = 1;
+            $this->session->set_userdata('pilih', $data['pilih']);
+            $this->session->set_userdata('keyword', $data['keyword']);
+        }
+        else {
+            $data['keyword']= $this->session->userdata('keyword');
+        }
+        
+        if ($this->input->post('nonota')) {
+            $data['keyword']= $this->input->post('nonota');
+            $data['pilih'] = 2;
+            $this->session->set_userdata('pilih', $data['pilih']);
+            $this->session->set_userdata('keyword', $data['keyword']);           
+        } else {
+            $data['keyword']= $this->session->userdata('keyword');
+        }
+      
+        if ($this->input->post('jns')) {
+            $data['keyword']= $this->input->post('jns');
+            $data['pilih'] = 3;
+            $this->session->set_userdata('pilih', $data['pilih']);
+            $this->session->set_userdata('keyword', $data['keyword']);           
+        } else {
+            $data['keyword']= $this->session->userdata('keyword');
+        }
+        $this->db->from('pembelian a'); 
+        $this->db->join('pembelian_detail b', 'a.no_pembelian=b.no_pembelian', 'left');
+        $this->db->like('a.tgl_masuk',$data['keyword']);  
+        $this->db->or_like('a.no_notabeli',$data['keyword']);
+        $this->db->or_like('a.jenis',$data['keyword']);
+        $config['total_rows'] =$this->db->count_all_results(); 
+        $data['total_rows'] = $config['total_rows']; 
+        $config['per_page'] = 10;
+        $this->pagination->initialize($config);     
+        $data['start'] = $this->uri->segment(3);
+        $data['poin'] = $this->report->getPembelian($config['per_page'], $data['start'],$data['keyword'],$data['pilih']);
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('laporan/data_recovery', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function deleteDataRecovery(){
+        // $nota_pembelian = $this->uri->segment(3);
+        // $idbarang = $this->uri->segment(4);
+        $nota_pembelian = $this->input->get('no_pembelian');
+        $idbarang = $this->input->get('idbarang');
+        $this->db->select('*');
+        $this->db->from('pembelian_detail'); 
+        $this->db->where('no_pembelian',$nota_pembelian);
+        $this->db->where('idbarang',$idbarang);
+        $data =  $this->db->get()->row_array();
+        $jumlah = $data['jumlah'];
+
+        $barang = $this->db->get_where('barang', ['idbarang' => $idbarang])->row_array();
+        $stok = $barang['stok'];
+        $kurangStok = $stok - $jumlah;
+
+        
+        $this->db->set('stok', $kurangStok);
+        $this->db->where('idbarang', $idbarang);
+        $this->db->update('barang');
+
+        //delete tabel yang sudah di update
+        $this->db->delete('pembelian_detail', array('no_pembelian' => $nota_pembelian,'idbarang' => $idbarang));
+        $status=$this->db->get_where('pembelian_detail', ['no_pembelian' => $nota_pembelian])->result_array();
+        if ($status == false) {
+            $this->db->delete('pembelian', array('no_pembelian' => $nota_pembelian));
+        }
+        redirect('laporan/recovery');
+
+    }
   
 }

@@ -252,10 +252,15 @@ class Transaksi extends CI_Controller
            $hrg_modal =$value['hrg_modal'];
            $hrg_satuan =$value['hrg_satuan'];        
            //rumus
+           if ($stok < 0) {
+            $stok = $stok * -1; 
+            }
+        
            $tambahStok = $stok + $jml_beli;         
+                      
            $updateharga = (($hrg_beli * $jml_beli) + ($stok * $hrg_modal)) / $tambahStok;
             //end rumus
-
+            
            $dataUpade = [
             'hrg_modal' => $updateharga,
             'stok' => $tambahStok

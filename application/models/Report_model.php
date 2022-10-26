@@ -183,5 +183,24 @@ class Report_model extends CI_Model
         }
         return $this->db->get()->row_array(); 
     }
+
+
+    
+    public function getDataRecovery($keyword = null,$pilih =null){
+        $this->db->select('*');
+        $this->db->from('penjualan a'); 
+        $this->db->join('penjualan_detail b', 'a.no_nota=b.no_nota', 'left');
+        $this->db->join('barang c', 'b.idbarang=c.idbarang', 'left');
+        $this->db->join('konsumen d', 'a.idpelanggan=d.idpelanggan', 'left');
+        $this->db->order_by('c.idbarang','DESC');
+        if ($pilih == 1) {
+            $this->db->like('a.tgl_nota',$keyword);
+        }elseif ($pilih ==2) {
+            $this->db->like('a.no_nota',$keyword);
+        }
+        return $this->db->get()->result_array(); 
+    }
+
+
 }
 
